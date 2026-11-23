@@ -1,0 +1,5 @@
+Project: ZhiJing XiaoJiang (植景小匠)
+Read docs/dev-prompt.md first - the full development brief.
+Seed data: public/data/plants.json | images: public/images/plants/
+DB schema: supabase/schema.sql
+This package contains NO Chinese file or folder names.

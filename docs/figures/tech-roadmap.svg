@@ -1,0 +1,202 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" font-family="WenQuanYi Micro Hei, sans-serif">
+  <defs>
+    <g id="arrow">
+      <line x1="0" y1="0" x2="0" y2="16" stroke="#111111" stroke-width="2.5"/>
+      <path d="M -6 14 L 0 24 L 6 14 Z" fill="#111111"/>
+    </g>
+  </defs>
+
+  <!-- 背景 -->
+  <rect x="0" y="0" width="1600" height="900" fill="#FBF3E4"/>
+
+  <!-- 标题 -->
+  <text x="800" y="52" text-anchor="middle" font-size="30" fill="#111111">「植景小匠」智能教学平台技术路线图</text>
+  <text x="800" y="80" text-anchor="middle" font-size="14" fill="#55606E">学生端 · 教师端双主线 ｜ 云端一体 · AI 赋能 · 全流程数据留痕</text>
+
+  <!-- ========== L1 用户接入层 ========== -->
+  <rect x="44" y="104" width="1210" height="92" rx="12" fill="#111111"/>
+  <rect x="40" y="100" width="1210" height="92" rx="12" fill="#FFFFFF" stroke="#111111" stroke-width="2"/>
+  <rect x="56" y="124" width="112" height="44" rx="8" fill="#8EC5FF" stroke="#111111" stroke-width="2"/>
+  <text x="112" y="152" text-anchor="middle" font-size="17" fill="#111111">用户接入层</text>
+
+  <rect x="184" y="118" width="519" height="56" rx="8" fill="#FBF3E4" stroke="#111111" stroke-width="1.5"/>
+  <text x="443" y="140" text-anchor="middle" font-size="15" fill="#111111">学生端 · 网页访问</text>
+  <text x="443" y="161" text-anchor="middle" font-size="13" fill="#55606E">图鉴学习 · 练习测评 · 智能问答 · 设计实训</text>
+
+  <rect x="715" y="118" width="519" height="56" rx="8" fill="#FBF3E4" stroke="#111111" stroke-width="1.5"/>
+  <text x="974" y="140" text-anchor="middle" font-size="15" fill="#111111">教师端 · 网页访问</text>
+  <text x="974" y="161" text-anchor="middle" font-size="13" fill="#55606E">题库维护 · 学情管理 · 任务发布 · 评阅提醒</text>
+
+  <!-- 箭头 G1 -->
+  <use href="#arrow" x="340" y="195"/>
+  <use href="#arrow" x="645" y="195"/>
+  <use href="#arrow" x="950" y="195"/>
+  <text x="975" y="212" font-size="13" fill="#55606E">浏览器访问</text>
+
+  <!-- ========== L2 应用功能层 ========== -->
+  <rect x="44" y="226" width="1210" height="150" rx="12" fill="#111111"/>
+  <rect x="40" y="222" width="1210" height="150" rx="12" fill="#FFFFFF" stroke="#111111" stroke-width="2"/>
+  <rect x="56" y="275" width="112" height="44" rx="8" fill="#FFD84D" stroke="#111111" stroke-width="2"/>
+  <text x="112" y="303" text-anchor="middle" font-size="17" fill="#111111">应用功能层</text>
+
+  <!-- 学生端子面板 -->
+  <rect x="184" y="238" width="620" height="118" rx="8" fill="#FBF3E4" stroke="#111111" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <rect x="196" y="248" width="60" height="22" rx="6" fill="#8EC5FF" stroke="#111111" stroke-width="1.5"/>
+  <text x="226" y="263" text-anchor="middle" font-size="13" fill="#111111">学生端</text>
+  <rect x="196" y="280" width="192" height="30" rx="6" fill="#FFFFFF" stroke="#111111" stroke-width="1.5"/>
+  <text x="292" y="300" text-anchor="middle" font-size="14" fill="#111111">植物图鉴</text>
+  <rect x="398" y="280" width="192" height="30" rx="6" fill="#FFFFFF" stroke="#111111" stroke-width="1.5"/>
+  <text x="494" y="300" text-anchor="middle" font-size="14" fill="#111111">练习与掌握判定</text>
+  <rect x="600" y="280" width="192" height="30" rx="6" fill="#FFFFFF" stroke="#111111" stroke-width="1.5"/>
+  <text x="696" y="300" text-anchor="middle" font-size="14" fill="#111111">AI 智能问答</text>
+  <rect x="196" y="316" width="192" height="30" rx="6" fill="#FFFFFF" stroke="#111111" stroke-width="1.5"/>
+  <text x="292" y="336" text-anchor="middle" font-size="14" fill="#111111">植景设计实训</text>
+  <rect x="398" y="316" width="192" height="30" rx="6" fill="#FFFFFF" stroke="#111111" stroke-width="1.5"/>
+  <text x="494" y="336" text-anchor="middle" font-size="14" fill="#111111">学习管理大屏</text>
+  <rect x="600" y="316" width="192" height="30" rx="6" fill="#FFFFFF" stroke="#111111" stroke-width="1.5"/>
+  <text x="696" y="336" text-anchor="middle" font-size="14" fill="#111111">消息通知</text>
+
+  <!-- 教师端子面板 -->
+  <rect x="818" y="238" width="416" height="118" rx="8" fill="#FBF3E4" stroke="#111111" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <rect x="830" y="248" width="60" height="22" rx="6" fill="#FFD84D" stroke="#111111" stroke-width="1.5"/>
+  <text x="860" y="263" text-anchor="middle" font-size="13" fill="#111111">教师端</text>
+  <rect x="830" y="280" width="191" height="30" rx="6" fill="#FFFFFF" stroke="#111111" stroke-width="1.5"/>
+  <text x="925" y="300" text-anchor="middle" font-size="14" fill="#111111">概览统计</text>
+  <rect x="1031" y="280" width="191" height="30" rx="6" fill="#FFFFFF" stroke="#111111" stroke-width="1.5"/>
+  <text x="1126" y="300" text-anchor="middle" font-size="14" fill="#111111">植物数据管理</text>
+  <rect x="830" y="316" width="191" height="30" rx="6" fill="#FFFFFF" stroke="#111111" stroke-width="1.5"/>
+  <text x="925" y="336" text-anchor="middle" font-size="14" fill="#111111">学情看板</text>
+  <rect x="1031" y="316" width="191" height="30" rx="6" fill="#FFFFFF" stroke="#111111" stroke-width="1.5"/>
+  <text x="1126" y="336" text-anchor="middle" font-size="14" fill="#111111">任务管理</text>
+
+  <!-- 箭头 G2 -->
+  <use href="#arrow" x="340" y="375"/>
+  <use href="#arrow" x="645" y="375"/>
+  <use href="#arrow" x="950" y="375"/>
+  <text x="975" y="392" font-size="13" fill="#55606E">API 调用</text>
+
+  <!-- ========== L3 AI 能力层 ========== -->
+  <rect x="44" y="406" width="1210" height="112" rx="12" fill="#111111"/>
+  <rect x="40" y="402" width="1210" height="112" rx="12" fill="#FFFFFF" stroke="#111111" stroke-width="2"/>
+  <rect x="56" y="436" width="112" height="44" rx="8" fill="#8EC5FF" stroke="#111111" stroke-width="2"/>
+  <text x="112" y="464" text-anchor="middle" font-size="17" fill="#111111">AI 能力层</text>
+
+  <rect x="184" y="430" width="165" height="56" rx="8" fill="#FBF3E4" stroke="#111111" stroke-width="1.5"/>
+  <text x="266" y="452" text-anchor="middle" font-size="14" fill="#111111">大模型流式问答</text>
+  <text x="266" y="471" text-anchor="middle" font-size="12" fill="#55606E">SSE 逐字输出</text>
+
+  <rect x="361" y="430" width="165" height="56" rx="8" fill="#FBF3E4" stroke="#111111" stroke-width="1.5"/>
+  <text x="443" y="452" text-anchor="middle" font-size="14" fill="#111111">造景效果图生成</text>
+  <text x="443" y="471" text-anchor="middle" font-size="12" fill="#55606E">图像模型生成</text>
+
+  <rect x="538" y="430" width="165" height="56" rx="8" fill="#FBF3E4" stroke="#111111" stroke-width="1.5"/>
+  <text x="620" y="452" text-anchor="middle" font-size="14" fill="#111111">云端语音通话</text>
+  <text x="620" y="471" text-anchor="middle" font-size="12" fill="#55606E">TTS 合成 · ASR 识别</text>
+
+  <rect x="715" y="430" width="165" height="56" rx="8" fill="#FBF3E4" stroke="#111111" stroke-width="1.5"/>
+  <text x="797" y="452" text-anchor="middle" font-size="14" fill="#111111">多模态识别</text>
+  <text x="797" y="471" text-anchor="middle" font-size="12" fill="#55606E">植物建档 · 手绘评阅</text>
+
+  <rect x="892" y="430" width="165" height="56" rx="8" fill="#FBF3E4" stroke="#111111" stroke-width="1.5"/>
+  <text x="974" y="452" text-anchor="middle" font-size="14" fill="#111111">规则+AI 双轨评阅</text>
+  <text x="974" y="471" text-anchor="middle" font-size="12" fill="#55606E">规则 + 语义判分</text>
+
+  <rect x="1069" y="430" width="165" height="56" rx="8" fill="#FBF3E4" stroke="#111111" stroke-width="1.5"/>
+  <text x="1151" y="452" text-anchor="middle" font-size="14" fill="#111111">AI 学情分析</text>
+  <text x="1151" y="471" text-anchor="middle" font-size="12" fill="#55606E">自然语言查询学情</text>
+
+  <!-- 箭头 G3 -->
+  <use href="#arrow" x="340" y="517"/>
+  <use href="#arrow" x="645" y="517"/>
+  <use href="#arrow" x="950" y="517"/>
+  <text x="975" y="534" font-size="13" fill="#55606E">模型服务调用</text>
+
+  <!-- ========== L4 平台服务层 ========== -->
+  <rect x="44" y="548" width="1210" height="92" rx="12" fill="#111111"/>
+  <rect x="40" y="544" width="1210" height="92" rx="12" fill="#FFFFFF" stroke="#111111" stroke-width="2"/>
+  <rect x="56" y="568" width="112" height="44" rx="8" fill="#FFD84D" stroke="#111111" stroke-width="2"/>
+  <text x="112" y="596" text-anchor="middle" font-size="17" fill="#111111">平台服务层</text>
+
+  <rect x="184" y="562" width="253" height="56" rx="8" fill="#FBF3E4" stroke="#111111" stroke-width="1.5"/>
+  <text x="310" y="584" text-anchor="middle" font-size="14" fill="#111111">身份认证与会话</text>
+  <text x="310" y="603" text-anchor="middle" font-size="12" fill="#55606E">学号映射 · 会话管理</text>
+
+  <rect x="449" y="562" width="253" height="56" rx="8" fill="#FBF3E4" stroke="#111111" stroke-width="1.5"/>
+  <text x="575" y="584" text-anchor="middle" font-size="14" fill="#111111">API 路由服务</text>
+  <text x="575" y="603" text-anchor="middle" font-size="12" fill="#55606E">鉴权 · 限流 · 校验</text>
+
+  <rect x="714" y="562" width="253" height="56" rx="8" fill="#FBF3E4" stroke="#111111" stroke-width="1.5"/>
+  <text x="840" y="584" text-anchor="middle" font-size="14" fill="#111111">统一数据访问层</text>
+  <text x="840" y="603" text-anchor="middle" font-size="12" fill="#55606E">云端 · 本地双模式</text>
+
+  <rect x="979" y="562" width="255" height="56" rx="8" fill="#FBF3E4" stroke="#111111" stroke-width="1.5"/>
+  <text x="1106" y="584" text-anchor="middle" font-size="14" fill="#111111">SSE 流式推送</text>
+  <text x="1106" y="603" text-anchor="middle" font-size="12" fill="#55606E">问答与评阅实时响应</text>
+
+  <!-- 箭头 G4 -->
+  <use href="#arrow" x="340" y="639"/>
+  <use href="#arrow" x="645" y="639"/>
+  <use href="#arrow" x="950" y="639"/>
+  <text x="975" y="656" font-size="13" fill="#55606E">数据读写</text>
+
+  <!-- ========== L5 数据存储层 ========== -->
+  <rect x="44" y="670" width="1210" height="92" rx="12" fill="#111111"/>
+  <rect x="40" y="666" width="1210" height="92" rx="12" fill="#FFFFFF" stroke="#111111" stroke-width="2"/>
+  <rect x="56" y="690" width="112" height="44" rx="8" fill="#8EC5FF" stroke="#111111" stroke-width="2"/>
+  <text x="112" y="718" text-anchor="middle" font-size="17" fill="#111111">数据存储层</text>
+  <text x="180" y="748" font-size="12" fill="#55606E">Supabase</text>
+
+  <rect x="184" y="684" width="253" height="56" rx="8" fill="#FBF3E4" stroke="#111111" stroke-width="1.5"/>
+  <text x="310" y="706" text-anchor="middle" font-size="14" fill="#111111">Auth 统一身份</text>
+  <text x="310" y="725" text-anchor="middle" font-size="12" fill="#55606E">师生账号 · 角色权限</text>
+
+  <rect x="449" y="684" width="253" height="56" rx="8" fill="#FBF3E4" stroke="#111111" stroke-width="1.5"/>
+  <text x="575" y="706" text-anchor="middle" font-size="14" fill="#111111">PostgreSQL 数据库</text>
+  <text x="575" y="725" text-anchor="middle" font-size="12" fill="#55606E">学情 · 题库 · 任务数据</text>
+
+  <rect x="714" y="684" width="253" height="56" rx="8" fill="#FBF3E4" stroke="#111111" stroke-width="1.5"/>
+  <text x="840" y="706" text-anchor="middle" font-size="14" fill="#111111">Storage 对象存储</text>
+  <text x="840" y="725" text-anchor="middle" font-size="12" fill="#55606E">图片 · 手绘图 · 音频</text>
+
+  <rect x="979" y="684" width="255" height="56" rx="8" fill="#FBF3E4" stroke="#111111" stroke-width="1.5"/>
+  <text x="1106" y="706" text-anchor="middle" font-size="14" fill="#111111">RLS 行级安全</text>
+  <text x="1106" y="725" text-anchor="middle" font-size="12" fill="#55606E">数据隔离 · 防剧透</text>
+
+  <!-- ========== 底部技术栈 ========== -->
+  <rect x="44" y="792" width="1210" height="60" rx="12" fill="#111111"/>
+  <rect x="40" y="788" width="1210" height="60" rx="12" fill="#111111" stroke="#111111" stroke-width="2"/>
+  <text x="645" y="825" text-anchor="middle" font-size="16" fill="#FBF3E4">技术栈：Next.js 16 · React 19 · TypeScript 5 · Tailwind CSS 4 · Supabase · 豆包大模型（SSE 流式）</text>
+
+  <!-- ========== 右侧：安全与工程护栏 ========== -->
+  <rect x="1282" y="104" width="282" height="658" rx="12" fill="#111111"/>
+  <rect x="1278" y="100" width="282" height="658" rx="12" fill="#FFFFFF" stroke="#111111" stroke-width="2"/>
+  <text x="1419" y="136" text-anchor="middle" font-size="18" fill="#111111">安全与工程护栏</text>
+  <line x1="1298" y1="152" x2="1540" y2="152" stroke="#111111" stroke-width="1.5"/>
+
+  <rect x="1298" y="186" width="10" height="10" fill="#FFD84D" stroke="#111111" stroke-width="1.5"/>
+  <text x="1318" y="196" font-size="15" fill="#111111">学号统一身份映射</text>
+  <text x="1318" y="220" font-size="12" fill="#55606E">师生账号规范管理</text>
+
+  <rect x="1298" y="281" width="10" height="10" fill="#8EC5FF" stroke="#111111" stroke-width="1.5"/>
+  <text x="1318" y="291" font-size="15" fill="#111111">注册邀请码准入</text>
+  <text x="1318" y="315" font-size="12" fill="#55606E">教师注册授权控制</text>
+
+  <rect x="1298" y="376" width="10" height="10" fill="#FFD84D" stroke="#111111" stroke-width="1.5"/>
+  <text x="1318" y="386" font-size="15" fill="#111111">接口限流与校验</text>
+  <text x="1318" y="410" font-size="12" fill="#55606E">双轨限流 · 防滥用</text>
+
+  <rect x="1298" y="471" width="10" height="10" fill="#8EC5FF" stroke="#111111" stroke-width="1.5"/>
+  <text x="1318" y="481" font-size="15" fill="#111111">会话续期机制</text>
+  <text x="1318" y="505" font-size="12" fill="#55606E">登录态稳定 · 一次性重置码</text>
+
+  <rect x="1298" y="566" width="10" height="10" fill="#FFD84D" stroke="#111111" stroke-width="1.5"/>
+  <text x="1318" y="576" font-size="15" fill="#111111">学生端防剧透脱敏</text>
+  <text x="1318" y="600" font-size="12" fill="#55606E">答案与评分要点隔离</text>
+
+  <rect x="1298" y="661" width="10" height="10" fill="#8EC5FF" stroke="#111111" stroke-width="1.5"/>
+  <text x="1318" y="671" font-size="15" fill="#111111">语音通话配额护栏</text>
+  <text x="1318" y="695" font-size="12" fill="#55606E">每生每日限额 · 控成本</text>
+
+  <!-- 页脚 -->
+  <text x="1560" y="876" text-anchor="end" font-size="12" fill="#55606E">上海农林职业学院《植物造景》课程组</text>
+</svg>

@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>植物图鉴 · 植景小匠</title>
+
+  <link href="https://lf-code-agent.coze.cn/obj/x-ai-cn/fonts/google/google-all-fonts.css" rel="stylesheet" />
+  <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/jquery/jquery-3.7.1.min.js"></script>
+  <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/lucide/lucide-1.11.0.min.js"></script>
+  <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/tailwindcss/tailwindcss-browser-4.2.4.min.js"></script>
+
+  <style type="text/tailwindcss">
+    @theme {
+      --color-primary:              #2F7A4F;
+      --color-primary-container:    #E3F0E8;
+      --color-on-primary:           #ffffff;
+      --color-on-primary-container: #1B4D31;
+      --color-background:                 #F7FAF8;
+      --color-surface-container-lowest:   #FFFFFF;
+      --color-surface:                    #FFFFFF;
+      --color-surface-container:          #EDF3EF;
+      --color-surface-container-high:     #E2EBE5;
+      --color-surface-container-highest:  #D7E2DA;
+      --color-on-surface:           #1C2B22;
+      --color-on-surface-variant:   #5C6E63;
+      --color-success:  #2AA05A;
+      --color-error:    #C0392B;
+      --color-warning:  #D97706;
+      --color-info:     #2563EB;
+      --color-outline:          #C2CFC6;
+      --color-outline-variant:  #DCE5DF;
+      --radius-sm:   0.375rem;
+      --radius-md:   0.5rem;
+      --radius-lg:   0.75rem;
+      --radius-xl:   1rem;
+      --radius-2xl:  1.25rem;
+      --radius-full: 9999px;
+      --shadow-card:   0 1px 3px rgba(28,43,34,0.10), 0 1px 2px rgba(28,43,34,0.06);
+      --shadow-float:  0 10px 25px rgba(28,43,34,0.14);
+      --shadow-dialog: 0 25px 50px rgba(28,43,34,0.18);
+      --font-sans:  "Inter", "Noto Sans SC", system-ui, sans-serif;
+      --font-latin: "Playfair Display", Georgia, serif;
+    }
+  </style>
+
+  <script>
+    document.addEventListener('error', function (e) {
+      const img = e.target;
+      if (img.tagName !== 'IMG' || img.dataset.fallback) return;
+      img.dataset.fallback = '1';
+      const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const cat = img.getAttribute('data-category') || '其他';
+      const alt = img.getAttribute('alt') || '';
+      const label = esc(alt.length > 8 ? alt.slice(0, 8) + '…' : alt);
+      const icons = { '人物': '👤', '自然风景': '🏞', '动物': '🐾', '建筑城市': '🏙', '运动体育': '⚽', '交通工具': '🚗', '食物': '🍽', '服饰时尚': '👗', '商业科技': '💼', '游戏娱乐': '🎮', '艺术': '🎨', '其他': '🖼' };
+      const icon = icons[cat] || '🖼';
+      const w = img.width || 400, h = img.height || 300;
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}"><rect width="100%" height="100%" fill="%23f3f4f6"/><text x="50%" y="45%" text-anchor="middle" font-size="${Math.min(w, h) * 0.18}" dominant-baseline="central">${icon}</text><text x="50%" y="68%" text-anchor="middle" font-size="${Math.min(w, h) * 0.07}" fill="%239ca3af" font-family="system-ui,sans-serif" dominant-baseline="central">${label}</text></svg>`;
+      img.src = 'data:image/svg+xml,' + svg;
+    }, true);
+  </script>
+</head>
+
+<body class="bg-background text-on-surface font-sans min-h-screen">
+
+  <!-- @nav:start 导航组件（植物图鉴激活态） -->
+  <header class="sticky top-0 z-40 bg-surface shadow-card">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-6">
+      <a href="home.html" class="flex items-center gap-2 shrink-0">
+        <i data-lucide="sprout" class="w-6 h-6 text-primary"></i>
+        <span class="text-lg font-bold text-on-surface">植景小匠</span>
+      </a>
+      <nav class="hidden md:flex items-center gap-1">
+        <a href="catalog.html" aria-current="page" class="px-3 py-2 rounded-md text-sm font-medium bg-primary/10 text-primary">植物图鉴</a>
+        <a href="design.html" class="px-3 py-2 rounded-md text-sm font-medium text-on-surface hover:bg-surface-container hover:text-primary transition-colors">植景设计</a>
+        <a href="chat.html" class="px-3 py-2 rounded-md text-sm font-medium text-on-surface hover:bg-surface-container hover:text-primary transition-colors">智能问答</a>
+        <a href="admin.html" class="px-3 py-2 rounded-md text-sm font-medium text-on-surface hover:bg-surface-container hover:text-primary transition-colors">管理后台<span class="ml-1 align-top text-[10px] px-1.5 py-0.5 rounded-full bg-primary text-on-primary">教师</span></a>
+      </nav>
+      <div class="flex items-center gap-3">
+        <div class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary-container text-on-primary-container text-xs font-medium">
+          <i data-lucide="book-check" class="w-4 h-4"></i>
+          <span>已掌握 12/124</span>
+        </div>
+        <div class="relative group">
+          <button class="w-9 h-9 rounded-full bg-primary text-on-primary text-sm font-semibold flex items-center justify-center" aria-label="用户菜单">初</button>
+          <div class="absolute right-0 top-11 w-44 bg-surface rounded-lg shadow-float border border-outline-variant/20 py-1.5 hidden group-hover:block">
+            <div class="px-3 py-1.5 text-xs text-on-surface-variant border-b border-outline-variant/20 mb-1">小初 · 景观 2301 · 学生</div>
+            <a href="catalog.html" class="flex items-center gap-2 px-3 py-2 text-sm text-on-surface hover:bg-surface-container">我的进度</a>
+            <a href="admin.html" class="flex items-center gap-2 px-3 py-2 text-sm text-on-surface hover:bg-surface-container">管理后台</a>
+            <a href="home.html" class="flex items-center gap-2 px-3 py-2 text-sm text-on-surface hover:bg-surface-container">退出登录</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- @nav:end -->
+
+  <!-- @main-content:start -->
+  <main class="max-w-7xl mx-auto w-full px-6 py-8">
+
+    <div class="flex items-end justify-between flex-wrap gap-3 mb-5">
+      <div>
+        <h1 class="text-2xl font-bold">植物图鉴</h1>
+        <p class="text-sm text-on-surface-variant mt-1">共 124 种 · 744 道练习题 · 课程教研组整理</p>
+      </div>
+      <p class="text-sm text-on-surface-variant flex items-center gap-1.5">
+        <i data-lucide="sliders-horizontal" class="w-4 h-4"></i>当前显示 <span id="count" class="font-semibold text-on-surface">12</span> 种
+      </p>
+    </div>
+
+    <!-- 筛选区 -->
+    <div class="bg-surface rounded-xl shadow-card p-4 space-y-3 mb-6">
+      <div class="flex flex-wrap items-center gap-2">
+        <div class="relative flex-1 min-w-[220px] max-w-md">
+          <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface-variant/60"></i>
+          <input id="search" type="text" placeholder="搜索植物名称 / 拉丁名 / 别名" class="w-full border-none bg-surface-container rounded-md pl-9 pr-3 py-2 text-sm focus:ring-2 focus:ring-primary/30 placeholder:text-on-surface-variant/50">
+        </div>
+        <select class="border-none bg-surface-container rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-primary/30">
+          <option>默认排序</option>
+          <option>按名称 A-Z</option>
+          <option>未掌握优先</option>
+        </select>
+        <button id="reset" class="px-3 py-2 rounded-md text-sm text-on-surface-variant hover:bg-surface-container transition-colors flex items-center gap-1.5">
+          <i data-lucide="rotate-ccw" class="w-4 h-4"></i>重置
+        </button>
+      </div>
+      <div class="flex flex-wrap items-center gap-1.5" data-group="category">
+        <span class="text-xs text-on-surface-variant mr-1">分类</span>
+        <button class="chip px-3 py-1.5 rounded-full text-xs font-medium bg-primary text-on-primary transition-colors">全部</button>
+        <button class="chip px-3 py-1.5 rounded-full text-xs font-medium bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">乔木</button>
+        <button class="chip px-3 py-1.5 rounded-full text-xs font-medium bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">灌木</button>
+        <button class="chip px-3 py-1.5 rounded-full text-xs font-medium bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">草本花卉</button>
+        <button class="chip px-3 py-1.5 rounded-full text-xs font-medium bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">宿根花卉</button>
+        <button class="chip px-3 py-1.5 rounded-full text-xs font-medium bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">水生植物</button>
+        <button class="chip px-3 py-1.5 rounded-full text-xs font-medium bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">藤本</button>
+        <button class="chip px-3 py-1.5 rounded-full text-xs font-medium bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">竹类</button>
+        <button class="chip px-3 py-1.5 rounded-full text-xs font-medium bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">地被</button>
+      </div>
+      <div class="flex flex-wrap items-center gap-1.5" data-group="usage">
+        <span class="text-xs text-on-surface-variant mr-1">应用</span>
+        <button class="chip px-3 py-1.5 rounded-full text-xs font-medium bg-primary text-on-primary transition-colors">全部</button>
+        <button class="chip px-3 py-1.5 rounded-full text-xs font-medium bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">行道树</button>
+        <button class="chip px-3 py-1.5 rounded-full text-xs font-medium bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">庭荫树</button>
+        <button class="chip px-3 py-1.5 rounded-full text-xs font-medium bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">花坛花境</button>
+        <button class="chip px-3 py-1.5 rounded-full text-xs font-medium bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">垂直绿化</button>
+        <button class="chip px-3 py-1.5 rounded-full text-xs font-medium bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">水景</button>
+        <button class="chip px-3 py-1.5 rounded-full text-xs font-medium bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">绿篱</button>
+        <button class="chip px-3 py-1.5 rounded-full text-xs font-medium bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">地被</button>
+      </div>
+      <div class="flex flex-wrap items-center gap-1.5" data-group="safety">
+        <span class="text-xs text-on-surface-variant mr-1">安全</span>
+        <button class="chip px-3 py-1.5 rounded-full text-xs font-medium bg-primary text-on-primary transition-colors">全部</button>
+        <button class="chip px-3 py-1.5 rounded-full text-xs font-medium bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors flex items-center gap-1"><i data-lucide="triangle-alert" class="w-3 h-3"></i>警示植物</button>
+        <button class="chip px-3 py-1.5 rounded-full text-xs font-medium bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors flex items-center gap-1"><i data-lucide="baby" class="w-3 h-3"></i>儿童慎用</button>
+      </div>
+      <div class="flex flex-wrap items-center gap-1.5" data-group="master">
+        <span class="text-xs text-on-surface-variant mr-1">掌握</span>
+        <button class="chip px-3 py-1.5 rounded-full text-xs font-medium bg-primary text-on-primary transition-colors">全部</button>
+        <button class="chip px-3 py-1.5 rounded-full text-xs font-medium bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">未掌握</button>
+        <button class="chip px-3 py-1.5 rounded-full text-xs font-medium bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors">已掌握</button>
+        <span class="text-xs text-on-surface-variant/70 flex items-center gap-1"><i data-lucide="lock" class="w-3 h-3"></i>登录后可按掌握状态筛选</span>
+      </div>
+    </div>
+
+    <!-- 卡片网格 -->
+    <div id="grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+
+      <article class="plant-card group bg-surface rounded-xl shadow-card overflow-hidden hover:shadow-float hover:-translate-y-0.5 transition-all duration-200 cursor-pointer" data-id="p001" data-name="香樟" data-latin="Cinnamomum camphora" data-tags="乔木 / 樟科 / 行道树">
+        <div class="relative h-40">
+          <img src="https://coze-coding-project.tos.coze.site/coze_storage_7685176549548720154/image/generate_image_49533ee6-975d-4a84-9431-268b1aa158d4.jpeg?sign=1820891147-2f58ed6c88-0-ed2e4e241cefb4ae6a95403d327e9462efc72df5d47d4952df24544348c86727" alt="香樟行道树冠幅饱满" data-category="自然风景" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300">
+          <span class="absolute top-2.5 left-2.5 bg-success text-white text-[11px] font-medium rounded-full px-2 py-0.5 flex items-center gap-1"><i data-lucide="check" class="w-3 h-3"></i>已掌握</span>
+        </div>
+        <div class="p-4">
+          <div class="flex items-baseline justify-between gap-2">
+            <h3 class="font-semibold">香樟</h3>
+            <span class="font-latin italic text-xs text-on-surface-variant truncate">Cinnamomum camphora</span>
+          </div>
+          <div class="flex flex-wrap gap-1.5 mt-2">
+            <span class="text-xs px-2 py-0.5 rounded-full bg-primary-container text-on-primary-container">乔木</span>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant">行道树</span>
+          </div>
+          <div class="flex items-center justify-between mt-3 text-xs text-on-surface-variant">
+            <span class="flex items-center gap-1"><i data-lucide="flower-2" class="w-3.5 h-3.5"></i>花期 4–5 月</span>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-on-surface-variant/50 group-hover:text-primary transition-colors"></i>
+          </div>
+        </div>
+      </article>
+
+      <article class="plant-card group bg-surface rounded-xl shadow-card overflow-hidden hover:shadow-float hover:-translate-y-0.5 transition-all duration-200 cursor-pointer" data-id="p002" data-name="银杏" data-latin="Ginkgo biloba" data-tags="乔木 / 银杏科 / 行道树">
+        <div class="relative h-40">
+          <img src="https://coze-coding-project.tos.coze.site/coze_storage_7685176549548720154/image/generate_image_e92eb428-1288-46c7-b8ce-d66dc719c605.jpeg?sign=1820891149-5a6fa97c98-0-7991e00fc72f7bf974c3c3bea94bdd22da7211fa6a8f82d404a2c78fc7aa2d17" alt="银杏扇形叶片枝条特写" data-category="自然风景" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300">
+          <span class="absolute top-2.5 left-2.5 bg-success text-white text-[11px] font-medium rounded-full px-2 py-0.5 flex items-center gap-1"><i data-lucide="check" class="w-3 h-3"></i>已掌握</span>
+        </div>
+        <div class="p-4">
+          <div class="flex items-baseline justify-between gap-2">
+            <h3 class="font-semibold">银杏</h3>
+            <span class="font-latin italic text-xs text-on-surface-variant truncate">Ginkgo biloba</span>
+          </div>
+          <div class="flex flex-wrap gap-1.5 mt-2">
+            <span class="text-xs px-2 py-0.5 rounded-full bg-primary-container text-on-primary-container">乔木</span>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant">秋色叶</span>
+          </div>
+          <div class="flex items-center justify-between mt-3 text-xs text-on-surface-variant">
+            <span class="flex items-center gap-1"><i data-lucide="flower-2" class="w-3.5 h-3.5"></i>花期 4 月</span>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-on-surface-variant/50 group-hover:text-primary transition-colors"></i>
+          </div>
+        </div>
+      </article>
+
+      <article class="plant-card group bg-surface rounded-xl shadow-card overflow-hidden hover:shadow-float hover:-translate-y-0.5 transition-all duration-200 cursor-pointer" data-id="p003" data-name="桂花" data-latin="Osmanthus fragrans" data-tags="灌木 / 木犀科 / 庭荫芳香">
+        <div class="relative h-40">
+          <img src="https://coze-coding-project.tos.coze.site/coze_storage_7685176549548720154/image/generate_image_71e955ff-cebd-4c52-822d-9d153286bd2a.jpeg?sign=1820891147-ccacbdb4c8-0-5b978bacc4b8f35dc5edcf02410c4a07d33ce87736db3ee1e7b385c2d5169408" alt="桂花枝头金黄花簇" data-category="自然风景" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300">
+        </div>
+        <div class="p-4">
+          <div class="flex items-baseline justify-between gap-2">
+            <h3 class="font-semibold">桂花</h3>
+            <span class="font-latin italic text-xs text-on-surface-variant truncate">Osmanthus fragrans</span>
+          </div>
+          <div class="flex flex-wrap gap-1.5 mt-2">
+            <span class="text-xs px-2 py-0.5 rounded-full bg-primary-container text-on-primary-container">灌木</span>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant">芳香</span>
+          </div>
+          <div class="flex items-center justify-between mt-3 text-xs text-on-surface-variant">
+            <span class="flex items-center gap-1"><i data-lucide="flower-2" class="w-3.5 h-3.5"></i>花期 9–10 月</span>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-on-surface-variant/50 group-hover:text-primary transition-colors"></i>
+          </div>
+        </div>
+      </article>
+
+      <article class="plant-card group bg-surface rounded-xl shadow-card overflow-hidden hover:shadow-float hover:-translate-y-0.5 transition-all duration-200 cursor-pointer" data-id="p004" data-name="月季" data-latin="Rosa chinensis" data-tags="灌木 / 蔷薇科 / 花坛花境">
+        <div class="relative h-40">
+          <img src="https://coze-coding-project.tos.coze.site/coze_storage_7685176549548720154/image/generate_image_a7b2a136-5c21-439e-afe4-929fc007debf.jpeg?sign=1820891148-f3e0e464bd-0-9de0abf22401667f0909264f0e0b184b271fd9f726d7f2c5cc0cafe5a9b47d25" alt="粉色重瓣月季盛开" data-category="自然风景" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300">
+        </div>
+        <div class="p-4">
+          <div class="flex items-baseline justify-between gap-2">
+            <h3 class="font-semibold">月季</h3>
+            <span class="font-latin italic text-xs text-on-surface-variant truncate">Rosa chinensis</span>
+          </div>
+          <div class="flex flex-wrap gap-1.5 mt-2">
+            <span class="text-xs px-2 py-0.5 rounded-full bg-primary-container text-on-primary-container">灌木</span>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant">花坛</span>
+          </div>
+          <div class="flex items-center justify-between mt-3 text-xs text-on-surface-variant">
+            <span class="flex items-center gap-1"><i data-lucide="flower-2" class="w-3.5 h-3.5"></i>花期 4–11 月</span>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-on-surface-variant/50 group-hover:text-primary transition-colors"></i>
+          </div>
+        </div>
+      </article>
+
+      <article class="plant-card group bg-surface rounded-xl shadow-card overflow-hidden hover:shadow-float hover:-translate-y-0.5 transition-all duration-200 cursor-pointer" data-id="p005" data-name="杜鹃" data-latin="Rhododendron simsii" data-tags="灌木 / 杜鹃花科 / 花境">
+        <div class="relative h-40">
+          <img src="https://coze-coding-project.tos.coze.site/coze_storage_7685176549548720154/image/generate_image_ee143353-72ed-4728-a341-4d01a686a8f4.jpeg?sign=1820891149-dc40eb968d-0-fe9d7925995bc37e90d52327b418a095ea3c917dd4c1b355cb93bae12f7a3f78" alt="杜鹃玫红色花朵繁密盛开" data-category="自然风景" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300">
+        </div>
+        <div class="p-4">
+          <div class="flex items-baseline justify-between gap-2">
+            <h3 class="font-semibold">杜鹃</h3>
+            <span class="font-latin italic text-xs text-on-surface-variant truncate">Rhododendron simsii</span>
+          </div>
+          <div class="flex flex-wrap gap-1.5 mt-2">
+            <span class="text-xs px-2 py-0.5 rounded-full bg-primary-container text-on-primary-container">灌木</span>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant">花境</span>
+          </div>
+          <div class="flex items-center justify-between mt-3 text-xs text-on-surface-variant">
+            <span class="flex items-center gap-1"><i data-lucide="flower-2" class="w-3.5 h-3.5"></i>花期 4–5 月</span>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-on-surface-variant/50 group-hover:text-primary transition-colors"></i>
+          </div>
+        </div>
+      </article>
+
+      <article class="plant-card group bg-surface rounded-xl shadow-card overflow-hidden hover:shadow-float hover:-translate-y-0.5 transition-all duration-200 cursor-pointer" data-id="p006" data-name="绣球" data-latin="Hydrangea macrophylla" data-tags="灌木 / 虎耳草科 / 花境">
+        <div class="relative h-40">
+          <img src="https://coze-coding-project.tos.coze.site/coze_storage_7685176549548720154/image/generate_image_4030133d-e005-45e0-b78c-986fcc77cfe5.jpeg?sign=1820891147-6c43b6f3b1-0-e88554cafe0e162ac1278b2ff7dacd8a8709572980dd1dad23158ae03f351dbd" alt="蓝紫色绣球花球成片" data-category="自然风景" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300">
+          <span class="absolute top-2.5 left-2.5 bg-success text-white text-[11px] font-medium rounded-full px-2 py-0.5 flex items-center gap-1"><i data-lucide="check" class="w-3 h-3"></i>已掌握</span>
+        </div>
+        <div class="p-4">
+          <div class="flex items-baseline justify-between gap-2">
+            <h3 class="font-semibold">绣球</h3>
+            <span class="font-latin italic text-xs text-on-surface-variant truncate">Hydrangea macrophylla</span>
+          </div>
+          <div class="flex flex-wrap gap-1.5 mt-2">
+            <span class="text-xs px-2 py-0.5 rounded-full bg-primary-container text-on-primary-container">灌木</span>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant">花境</span>
+          </div>
+          <div class="flex items-center justify-between mt-3 text-xs text-on-surface-variant">
+            <span class="flex items-center gap-1"><i data-lucide="flower-2" class="w-3.5 h-3.5"></i>花期 6–8 月</span>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-on-surface-variant/50 group-hover:text-primary transition-colors"></i>
+          </div>
+        </div>
+      </article>
+
+      <article class="plant-card group bg-surface rounded-xl shadow-card overflow-hidden hover:shadow-float hover:-translate-y-0.5 transition-all duration-200 cursor-pointer" data-id="p007" data-name="紫藤" data-latin="Wisteria sinensis" data-tags="藤本 / 豆科 / 垂直绿化">
+        <div class="relative h-40">
+          <img src="https://coze-coding-project.tos.coze.site/coze_storage_7685176549548720154/image/generate_image_190e6cab-97b3-4ad9-bc67-242b1c3ff843.jpeg?sign=1820891148-e067322a9e-0-a3dc357fcde234b16555cf44cf6e9acaa1967b6400670a5aff893c4b313ad8ee" alt="紫藤花串悬垂花架" data-category="自然风景" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300">
+        </div>
+        <div class="p-4">
+          <div class="flex items-baseline justify-between gap-2">
+            <h3 class="font-semibold">紫藤</h3>
+            <span class="font-latin italic text-xs text-on-surface-variant truncate">Wisteria sinensis</span>
+          </div>
+          <div class="flex flex-wrap gap-1.5 mt-2">
+            <span class="text-xs px-2 py-0.5 rounded-full bg-primary-container text-on-primary-container">藤本</span>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant">棚架</span>
+          </div>
+          <div class="flex items-center justify-between mt-3 text-xs text-on-surface-variant">
+            <span class="flex items-center gap-1"><i data-lucide="flower-2" class="w-3.5 h-3.5"></i>花期 4–5 月</span>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-on-surface-variant/50 group-hover:text-primary transition-colors"></i>
+          </div>
+        </div>
+      </article>
+
+      <article class="plant-card group bg-surface rounded-xl shadow-card overflow-hidden hover:shadow-float hover:-translate-y-0.5 transition-all duration-200 cursor-pointer" data-id="p008" data-name="荷花" data-latin="Nelumbo nucifera" data-tags="水生 / 莲科 / 水景">
+        <div class="relative h-40">
+          <img src="https://coze-coding-project.tos.coze.site/coze_storage_7685176549548720154/image/generate_image_5b2683b6-9e83-4465-9949-34dd646a2375.jpeg?sign=1820891147-947ee17efe-0-91190bdfe52864bbe609c964d7b3270ff6f730b75e12c71f8cdfe99ed537be9c" alt="池塘粉白荷花与荷叶" data-category="自然风景" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300">
+        </div>
+        <div class="p-4">
+          <div class="flex items-baseline justify-between gap-2">
+            <h3 class="font-semibold">荷花</h3>
+            <span class="font-latin italic text-xs text-on-surface-variant truncate">Nelumbo nucifera</span>
+          </div>
+          <div class="flex flex-wrap gap-1.5 mt-2">
+            <span class="text-xs px-2 py-0.5 rounded-full bg-primary-container text-on-primary-container">水生</span>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant">水景</span>
+          </div>
+          <div class="flex items-center justify-between mt-3 text-xs text-on-surface-variant">
+            <span class="flex items-center gap-1"><i data-lucide="flower-2" class="w-3.5 h-3.5"></i>花期 6–9 月</span>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-on-surface-variant/50 group-hover:text-primary transition-colors"></i>
+          </div>
+        </div>
+      </article>
+
+      <article class="plant-card group bg-surface rounded-xl shadow-card overflow-hidden hover:shadow-float hover:-translate-y-0.5 transition-all duration-200 cursor-pointer" data-id="p009" data-name="鸢尾" data-latin="Iris tectorum" data-tags="宿根 / 鸢尾科 / 花境水景">
+        <div class="relative h-40">
+          <img src="https://coze-coding-project.tos.coze.site/coze_storage_7685176549548720154/image/generate_image_50ccd935-53c8-44ee-a063-e12a4b3bc4c1.jpeg?sign=1820891147-ded34f296a-0-12a6665c738f1879d7da0bdfcace8161688276970b2e91d3f97e6c14483f9e94" alt="蓝紫色鸢尾花与绿叶" data-category="自然风景" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300">
+        </div>
+        <div class="p-4">
+          <div class="flex items-baseline justify-between gap-2">
+            <h3 class="font-semibold">鸢尾</h3>
+            <span class="font-latin italic text-xs text-on-surface-variant truncate">Iris tectorum</span>
+          </div>
+          <div class="flex flex-wrap gap-1.5 mt-2">
+            <span class="text-xs px-2 py-0.5 rounded-full bg-primary-container text-on-primary-container">宿根</span>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant">花境</span>
+          </div>
+          <div class="flex items-center justify-between mt-3 text-xs text-on-surface-variant">
+            <span class="flex items-center gap-1"><i data-lucide="flower-2" class="w-3.5 h-3.5"></i>花期 4–5 月</span>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-on-surface-variant/50 group-hover:text-primary transition-colors"></i>
+          </div>
+        </div>
+      </article>
+
+      <article class="plant-card group bg-surface rounded-xl shadow-card overflow-hidden hover:shadow-float hover:-translate-y-0.5 transition-all duration-200 cursor-pointer" data-id="p010" data-name="毛竹" data-latin="Phyllostachys edulis" data-tags="竹类 / 禾本科 / 片植隔景">
+        <div class="relative h-40">
+          <img src="https://coze-coding-project.tos.coze.site/coze_storage_7685176549548720154/image/generate_image_32ca651d-734b-4a10-942b-d76f4ea816b0.jpeg?sign=1820891150-d78bc7a72c-0-0c336f11cbd5f7c23963ed8fba936cb3d8977f9e346de0ed09fa0020a9382ab0" alt="竹林青竿与细叶光影" data-category="自然风景" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300">
+        </div>
+        <div class="p-4">
+          <div class="flex items-baseline justify-between gap-2">
+            <h3 class="font-semibold">毛竹</h3>
+            <span class="font-latin italic text-xs text-on-surface-variant truncate">Phyllostachys edulis</span>
+          </div>
+          <div class="flex flex-wrap gap-1.5 mt-2">
+            <span class="text-xs px-2 py-0.5 rounded-full bg-primary-container text-on-primary-container">竹类</span>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant">隔景</span>
+          </div>
+          <div class="flex items-center justify-between mt-3 text-xs text-on-surface-variant">
+            <span class="flex items-center gap-1"><i data-lucide="flower-2" class="w-3.5 h-3.5"></i>少见开花</span>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-on-surface-variant/50 group-hover:text-primary transition-colors"></i>
+          </div>
+        </div>
+      </article>
+
+      <article class="plant-card group bg-surface rounded-xl shadow-card overflow-hidden hover:shadow-float hover:-translate-y-0.5 transition-all duration-200 cursor-pointer" data-id="p011" data-name="麦冬" data-latin="Ophiopogon japonicus" data-tags="地被 / 百合科 / 地被">
+        <div class="relative h-40">
+          <img src="https://coze-coding-project.tos.coze.site/coze_storage_7685176549548720154/image/generate_image_eebfcfa7-66b7-4383-96d8-e717fc42a690.jpeg?sign=1820891147-53478d8647-0-12d90627573c98f19013a35ed000faf1e80692a8d3b1333db7a9ac5bbe454a76" alt="麦冬低矮绿叶地被连片" data-category="自然风景" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300">
+        </div>
+        <div class="p-4">
+          <div class="flex items-baseline justify-between gap-2">
+            <h3 class="font-semibold">麦冬</h3>
+            <span class="font-latin italic text-xs text-on-surface-variant truncate">Ophiopogon japonicus</span>
+          </div>
+          <div class="flex flex-wrap gap-1.5 mt-2">
+            <span class="text-xs px-2 py-0.5 rounded-full bg-primary-container text-on-primary-container">地被</span>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant">耐阴</span>
+          </div>
+          <div class="flex items-center justify-between mt-3 text-xs text-on-surface-variant">
+            <span class="flex items-center gap-1"><i data-lucide="flower-2" class="w-3.5 h-3.5"></i>花期 7–8 月</span>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-on-surface-variant/50 group-hover:text-primary transition-colors"></i>
+          </div>
+        </div>
+      </article>
+
+      <article class="plant-card group bg-surface rounded-xl shadow-card overflow-hidden hover:shadow-float hover:-translate-y-0.5 transition-all duration-200 cursor-pointer" data-id="p012" data-name="夹竹桃" data-latin="Nerium oleander" data-tags="灌木 / 夹竹桃科 / 绿篱警示">
+        <div class="relative h-40">
+          <img src="https://coze-coding-project.tos.coze.site/coze_storage_7685176549548720154/image/generate_image_b9fa2d30-3b65-4b56-bd26-f9d51a3f642f.jpeg?sign=1820891147-5b23f88176-0-9cf20dfedce342150486c91b943db00761b94e07de4f3bd24971ac1f72418c05" alt="夹竹桃花簇与革质叶片" data-category="自然风景" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-300">
+          <span class="absolute top-2.5 left-2.5 bg-error text-white text-[11px] font-medium rounded-full px-2 py-0.5 flex items-center gap-1"><i data-lucide="triangle-alert" class="w-3 h-3"></i>警示</span>
+        </div>
+        <div class="p-4">
+          <div class="flex items-baseline justify-between gap-2">
+            <h3 class="font-semibold">夹竹桃</h3>
+            <span class="font-latin italic text-xs text-on-surface-variant truncate">Nerium oleander</span>
+          </div>
+          <div class="flex flex-wrap gap-1.5 mt-2">
+            <span class="text-xs px-2 py-0.5 rounded-full bg-primary-container text-on-primary-container">灌木</span>
+            <span class="text-xs px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant">绿篱</span>
+          </div>
+          <div class="flex items-center justify-between mt-3 text-xs text-on-surface-variant">
+            <span class="flex items-center gap-1"><i data-lucide="flower-2" class="w-3.5 h-3.5"></i>花期 6–10 月</span>
+            <i data-lucide="chevron-right" class="w-4 h-4 text-on-surface-variant/50 group-hover:text-primary transition-colors"></i>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <p id="empty" class="hidden text-center text-sm text-on-surface-variant py-16">没有找到匹配的植物，试试放宽筛选条件</p>
+  </main>
+  <!-- @main-content:end -->
+
+  <!-- 植物详情弹窗 -->
+  <div id="plant-modal" class="fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 bg-black/45 backdrop-blur-sm" data-close></div>
+    <div class="relative max-w-3xl mx-auto mt-[6vh] mb-10 bg-surface rounded-2xl shadow-dialog overflow-hidden">
+      <div class="relative h-60 overflow-hidden">
+        <img id="modal-img" src="https://coze-coding-project.tos.coze.site/coze_storage_7685176549548720154/image/generate_image_49533ee6-975d-4a84-9431-268b1aa158d4.jpeg?sign=1820891147-2f58ed6c88-0-ed2e4e241cefb4ae6a95403d327e9462efc72df5d47d4952df24544348c86727" alt="植物主图" data-category="自然风景" class="w-full h-full object-cover transition-transform duration-300">
+        <div class="absolute top-3 right-3 flex gap-2">
+          <button data-zoom="out" class="img-toggle bg-black/40 backdrop-blur-sm text-white text-xs rounded-full px-3 py-1.5 hover:bg-black/55 transition-colors">全株</button>
+          <button data-zoom="in" class="img-toggle bg-black/40 backdrop-blur-sm text-white text-xs rounded-full px-3 py-1.5 hover:bg-black/55 transition-colors">花叶特写</button>
+        </div>
+        <span id="modal-warn-badge" class="hidden absolute top-3 left-14 bg-error text-white text-xs font-medium rounded-full px-3 py-1.5 flex items-center gap-1"><i data-lucide="triangle-alert" class="w-3.5 h-3.5"></i>全株有毒 · 谨慎接触</span>
+        <button data-close class="absolute top-3 left-3 w-8 h-8 rounded-full bg-black/40 backdrop-blur-sm text-white flex items-center justify-center hover:bg-black/55 transition-colors" aria-label="关闭">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="p-6 grid md:grid-cols-2 gap-6 max-h-[48vh] overflow-y-auto">
+        <div class="space-y-5">
+          <div>
+            <h2 id="modal-name" class="text-xl font-bold">香樟</h2>
+            <p id="modal-latin" class="font-latin italic text-sm text-on-surface-variant mt-0.5">Cinnamomum camphora</p>
+          </div>
+          <div>
+            <p class="text-xs font-semibold text-on-surface-variant uppercase tracking-wide mb-2">基础信息</p>
+            <dl class="text-sm space-y-1.5">
+              <div class="flex gap-2"><dt class="text-on-surface-variant w-14 shrink-0">别名</dt><dd id="m-alias">樟树、香蕊</dd></div>
+              <div class="flex gap-2"><dt class="text-on-surface-variant w-14 shrink-0">科属</dt><dd id="m-family">樟科 樟属</dd></div>
+              <div class="flex gap-2"><dt class="text-on-surface-variant w-14 shrink-0">生活型</dt><dd id="m-form">常绿乔木</dd></div>
+              <div class="flex gap-2"><dt class="text-on-surface-variant w-14 shrink-0">株高</dt><dd id="m-height">10–20 m</dd></div>
+              <div class="flex gap-2"><dt class="text-on-surface-variant w-14 shrink-0">冠幅</dt><dd id="m-canopy">8–15 m</dd></div>
+            </dl>
+          </div>
+          <div>
+            <p class="text-xs font-semibold text-on-surface-variant uppercase tracking-wide mb-2">生态习性</p>
+            <dl class="text-sm space-y-1.5">
+              <div class="flex gap-2"><i data-lucide="sun" class="w-4 h-4 text-on-surface-variant mt-0.5 shrink-0"></i><dd id="m-sun">喜光，稍耐阴</dd></div>
+              <div class="flex gap-2"><i data-lucide="droplets" class="w-4 h-4 text-on-surface-variant mt-0.5 shrink-0"></i><dd id="m-water">喜湿润，忌积水</dd></div>
+              <div class="flex gap-2"><i data-lucide="mountain" class="w-4 h-4 text-on-surface-variant mt-0.5 shrink-0"></i><dd id="m-soil">酸性至中性土，耐瘠薄</dd></div>
+              <div class="flex gap-2"><i data-lucide="thermometer-snowflake" class="w-4 h-4 text-on-surface-variant mt-0.5 shrink-0"></i><dd id="m-hardy">耐寒下限约 -10 ℃</dd></div>
+            </dl>
+          </div>
+        </div>
+
+        <div class="space-y-5">
+          <div>
+            <p class="text-xs font-semibold text-on-surface-variant uppercase tracking-wide mb-2">观赏特性</p>
+            <p id="m-orn" class="text-sm leading-relaxed">树冠卵球形，分枝低、冠大荫浓；春夏抽发嫩叶呈浅绿泛红，全株含樟脑清香。</p>
+            <div class="grid grid-cols-4 gap-1.5 items-end h-16 mt-3">
+              <div class="flex flex-col items-center gap-1 h-full"><div class="w-full rounded-t-md bg-primary/25 mt-auto" style="height:30%"></div><span class="text-[10px] text-on-surface-variant">春</span></div>
+              <div class="flex flex-col items-center gap-1 h-full"><div class="w-full rounded-t-md bg-primary mt-auto" style="height:90%"></div><span class="text-[10px] text-on-surface-variant">夏</span></div>
+              <div class="flex flex-col items-center gap-1 h-full"><div class="w-full rounded-t-md bg-primary/60 mt-auto" style="height:55%"></div><span class="text-[10px] text-on-surface-variant">秋</span></div>
+              <div class="flex flex-col items-center gap-1 h-full"><div class="w-full rounded-t-md bg-primary/20 mt-auto" style="height:18%"></div><span class="text-[10px] text-on-surface-variant">冬</span></div>
+            </div>
+            <p class="text-[10px] text-on-surface-variant/70 mt-1">四季景观价值（相条示意）</p>
+          </div>
+          <div>
+            <p class="text-xs font-semibold text-on-surface-variant uppercase tracking-wide mb-2">应用配置</p>
+            <p id="m-usage" class="text-sm leading-relaxed">行道树、庭荫树、防护林带；可孤植、列植，江南地区骨干树种。</p>
+            <p id="m-note" class="text-xs text-on-surface-variant mt-2 leading-relaxed">配置提示：根系扩展强，定植需远离地下管线与人行道铺装。</p>
+          </div>
+          <div id="m-safety" class="hidden">
+            <p class="text-xs font-semibold text-error uppercase tracking-wide mb-2 flex items-center gap-1"><i data-lucide="triangle-alert" class="w-3.5 h-3.5"></i>安全警示（教学必读）</p>
+            <div class="rounded-lg bg-error/5 p-3 text-sm space-y-1.5 border-l-4 border-error">
+              <p><span class="text-on-surface-variant">风险类型：</span><span id="m-warn-type">强心苷类毒性</span></p>
+              <p><span class="text-on-surface-variant">有毒部位：</span><span id="m-warn-part">全株，叶与汁液最强</span></p>
+              <p><span class="text-on-surface-variant">中毒表现：</span><span id="m-warn-sym">误食致恶心呕吐、心律失常；汁液接触皮肤引发红肿刺痛</span></p>
+              <p><span class="text-on-surface-variant">教学提示：</span><span id="m-warn-tip">考核需准确描述毒性；绿地应用远离儿童活动区，修剪作业须戴手套</span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="px-6 py-4 border-t border-outline-variant/20 flex items-center justify-between gap-3 flex-wrap">
+        <div class="flex gap-2">
+          <button class="px-3 py-2 rounded-md text-sm text-on-surface-variant hover:bg-surface-container transition-colors flex items-center gap-1"><i data-lucide="chevron-left" class="w-4 h-4"></i>上一种</button>
+          <button class="px-3 py-2 rounded-md text-sm text-on-surface-variant hover:bg-surface-container transition-colors flex items-center gap-1">下一种<i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+        </div>
+        <div class="flex gap-2">
+          <a id="m-chat" href="chat.html?plant_id=p001" class="px-4 py-2 rounded-md bg-surface-container text-sm font-medium flex items-center gap-1.5 hover:bg-surface-container-high transition-colors"><i data-lucide="message-circle-question" class="w-4 h-4"></i>AI 讲解</a>
+          <a id="m-quiz" href="plant-quiz.html?plant_id=p001" class="px-4 py-2 rounded-md bg-primary text-on-primary text-sm font-medium flex items-center gap-1.5 hover:opacity-90 transition-opacity"><i data-lucide="pencil-line" class="w-4 h-4"></i>开始练习此植物</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    // 详情数据（原型示意，覆盖 12 种卡片植物）
+    const PLANTS = {
+      p001: { name:'香樟', latin:'Cinnamomum camphora', alias:'樟树、香蕊', family:'樟科 樟属', form:'常绿乔木', height:'10–20 m', canopy:'8–15 m', sun:'喜光，稍耐阴', water:'喜湿润，忌积水', soil:'酸性至中性土，耐瘠薄', hardy:'耐寒下限约 -10 ℃', orn:'树冠卵球形，冠大荫浓；春夏新叶嫩绿，全株具樟脑清香。', usage:'行道树、庭荫树、防护林带；孤植或列植。', note:'根系扩展强，定植远离地下管线与铺装。', warn:null,
+        img:'https://coze-coding-project.tos.coze.site/coze_storage_7685176549548720154/image/generate_image_49533ee6-975d-4a84-9431-268b1aa158d4.jpeg?sign=1820891147-2f58ed6c88-0-ed2e4e241cefb4ae6a95403d327e9462efc72df5d47d4952df24544348c86727' },
+      p002: { name:'银杏', latin:'Ginkgo biloba', alias:'白果树、公孙树', family:'银杏科 银杏属', form:'落叶乔木', height:'20–30 m', canopy:'8–12 m', sun:'喜光', water:'耐旱，忌涝', soil:'深厚中性土为宜', hardy:'耐寒性强（-20 ℃）', orn:'扇形叶，秋叶金黄，是著名秋色叶树种；树干通直。', usage:'行道树、庭荫树、广场孤植；亦作经济林。', note:'雌株落果有异味，行道宜选雄株。', warn:null,
+        img:'https://coze-coding-project.tos.coze.site/coze_storage_7685176549548720154/image/generate_image_e92eb428-1288-46c7-b8ce-d66dc719c605.jpeg?sign=1820891149-5a6fa97c98-0-7991e00fc72f7bf974c3c3bea94bdd22da7211fa6a8f82d404a2c78fc7aa2d17' },
+      p003: { name:'桂花', latin:'Osmanthus fragrans', alias:'木犀、岩桂', family:'木犀科 木犀属', form:'常绿小乔木/灌木', height:'3–8 m', canopy:'3–6 m', sun:'喜光，稍耐阴', water:'喜湿润，忌积水', soil:'微酸性砂壤土', hardy:'耐寒下限约 -8 ℃', orn:'枝叶茂密，秋季金黄小花成簇，芳香浓郁。', usage:'庭荫树、园路对植、窗前种植；传统香花树种。', note:'秋季忌重修剪，以免影响来年花芽。', warn:null,
+        img:'https://coze-coding-project.tos.coze.site/coze_storage_7685176549548720154/image/generate_image_71e955ff-cebd-4c52-822d-9d153286bd2a.jpeg?sign=1820891147-ccacbdb4c8-0-5b978bacc4b8f35dc5edcf02410c4a07d33ce87736db3ee1e7b385c2d5169408' },
+      p004: { name:'月季', latin:'Rosa chinensis', alias:'长春花、月月红', family:'蔷薇科 蔷薇属', form:'常绿/半常绿灌木', height:'1–2 m', canopy:'1–1.5 m', sun:'喜光，日照≥6 h', water:'见干见湿', soil:'肥沃微酸性土', hardy:'耐寒性中等', orn:'重瓣花色丰富，连续开花，是花坛花境主力。', usage:'花坛、花境、盆栽、切花；可作低矮花篱。', note:'需及时修剪残花并防治黑斑病、蚜虫。', warn:null,
+        img:'https://coze-coding-project.tos.coze.site/coze_storage_7685176549548720154/image/generate_image_a7b2a136-5c21-439e-afe4-929fc007debf.jpeg?sign=1820891148-f3e0e464bd-0-9de0abf22401667f0909264f0e0b184b271fd9f726d7f2c5cc0cafe5a9b47d25' },
+      p005: { name:'杜鹃', latin:'Rhododendron simsii', alias:'映山红、山踯躅', family:'杜鹃花科 杜鹃属', form:'常绿/半常绿灌木', height:'1–3 m', canopy:'1–2 m', sun:'半荫环境为佳', water:'喜湿润，忌积水', soil:'酸性土（pH 4.5–6）', hardy:'耐寒性中等', orn:'春季玫红花繁密似锦，宜丛植营造山花烂漫景观。', usage:'花境、花篱、岩石园；可片植于疏林下。', note:'石灰性土易黄化，需施硫酸亚铁调酸。', warn:null,
+        img:'https://coze-coding-project.tos.coze.site/coze_storage_7685176549548720154/image/generate_image_ee143353-72ed-4728-a341-4d01a686a8f4.jpeg?sign=1820891149-dc40eb968d-0-fe9d7925995bc37e90d52327b418a095ea3c917dd4c1b355cb93bae12f7a3f78' },
+      p006: { name:'绣球', latin:'Hydrangea macrophylla', alias:'八仙花、紫阳花', family:'虎耳草科 绣球属', form:'落叶灌木', height:'1–1.5 m', canopy:'1–1.5 m', sun:'耐半荫，忌暴晒', water:'喜湿润', soil:'疏松肥沃酸性土', hardy:'耐寒性中等', orn:'花序硕大呈球状，蓝紫或粉红，土壤酸碱度可调色。', usage:'花境中后层、林缘丛植、庭院点缀。', note:'花后及时剪除残序；冬季适度重剪促新枝。', warn:null,
+        img:'https://coze-coding-project.tos.coze.site/coze_storage_7685176549548720154/image/generate_image_4030133d-e005-45e0-b78c-986fcc77cfe5.jpeg?sign=1820891147-6c43b6f3b1-0-e88554cafe0e162ac1278b2ff7dacd8a8709572980dd1dad23158ae03f351dbd' },
+      p007: { name:'紫藤', latin:'Wisteria sinensis', alias:'朱藤、招藤', family:'豆科 紫藤属', form:'落叶藤本', height:'攀援 10 m+', canopy:'棚架覆盖', sun:'喜光', water:'耐旱，忌涝', soil:'深厚排水良好', hardy:'耐寒性强', orn:'总状花序下垂可达 30 cm，紫白花串，春日如瀑。', usage:'花架、长廊、凉亭垂直绿化；孤植作主景。', note:'寿命长、藤茎缠绕力强，需坚固棚架并定期引导。', warn:null,
+        img:'https://coze-coding-project.tos.coze.site/coze_storage_7685176549548720154/image/generate_image_190e6cab-97b3-4ad9-bc67-242b1c3ff843.jpeg?sign=1820891148-e067322a9e-0-a3dc357fcde234b16555cf44cf6e9acaa1967b6400670a5aff893c4b313ad8ee' },
+      p008: { name:'荷花', latin:'Nelumbo nucifera', alias:'莲花、芙蕖', family:'莲科 莲属', form:'多年生水生草本', height:'立叶高 0.6–1.8 m', canopy:'水面覆盖', sun:'强光照需求', water:'静水 0.3–1.2 m', soil:'塘泥富有机质', hardy:'地下藕耐寒', orn:'花大色雅、出淤泥而不染，夏日水景主角。', usage:'池塘、缸栽水景；与睡莲、菖蒲搭配层次。', note:'控制种植密度防蔓延；注意鱼藕共生平衡。', warn:null,
+        img:'https://coze-coding-project.tos.coze.site/coze_storage_7685176549548720154/image/generate_image_5b2683b6-9e83-4465-9949-34dd646a2375.jpeg?sign=1820891147-947ee17efe-0-91190bdfe52864bbe609c964d7b3270ff6f730b75e12c71f8cdfe99ed537be9c' },
+      p009: { name:'鸢尾', latin:'Iris tectorum', alias:'蓝蝴蝶、扁竹花', family:'鸢尾科 鸢尾属', form:'多年生宿根草本', height:'0.3–0.6 m', canopy:'0.3–0.5 m', sun:'耐半荫', water:'喜湿润，耐湿性强', soil:'适应性强', hardy:'耐寒性较强', orn:'蓝紫色花被片如蝶，叶片剑形整齐，清雅秀丽。', usage:'水边、花境镶边、林下地被。', note:'花后剪除花葶，两年分株一次复壮。', warn:null,
+        img:'https://coze-coding-project.tos.coze.site/coze_storage_7685176549548720154/image/generate_image_50ccd935-53c8-44ee-a063-e12a4b3bc4c1.jpeg?sign=1820891147-ded34f296a-0-12a6665c738f1879d7da0bdfcace8161688276970b2e91d3f97e6c14483f9e94' },
+      p010: { name:'毛竹', latin:'Phyllostachys edulis', alias:'楠竹、江南竹', family:'禾本科 刚竹属', form:'常绿散生竹', height:'8–18 m', canopy:'片植成林', sun:'喜光亦耐荫', water:'喜湿润排水好', soil:'深厚酸性土', hardy:'耐寒 -12 ℃ 左右', orn:'秆高叶细、四季常青，竹林光影是江南园林意境核心。', usage:'片植成林、隔景障景、亭廊配竹。', note:'需设阻根板防鞭蔓扩散。', warn:null,
+        img:'https://coze-coding-project.tos.coze.site/coze_storage_7685176549548720154/image/generate_image_32ca651d-734b-4a10-942b-d76f4ea816b0.jpeg?sign=1820891150-d78bc7a72c-0-0c336f11cbd5f7c23963ed8fba936cb3d8977f9e346de0ed09fa0020a9382ab0' },
+      p011: { name:'麦冬', latin:'Ophiopogon japonicus', alias:'沿阶草、书带草', family:'百合科 沿阶草属', form:'常绿宿根草本', height:'0.12–0.3 m', canopy:'连片铺展', sun:'耐阴性强', water:'耐旱耐湿', soil:'适应性强', hardy:'耐寒性较强', orn:'叶丛低矮细密，四季常绿，蓝紫色小花成穗。', usage:'林下地被、路缘镶边、岩石园填充。', note:'两年分栽一次，防中心秃裸。', warn:null,
+        img:'https://coze-coding-project.tos.coze.site/coze_storage_7685176549548720154/image/generate_image_eebfcfa7-66b7-4383-96d8-e717fc42a690.jpeg?sign=1820891147-53478d8647-0-12d90627573c98f19013a35ed000faf1e80692a8d3b1333db7a9ac5bbe454a76' },
+      p012: { name:'夹竹桃', latin:'Nerium oleander', alias:'柳叶桃、半年红', family:'夹竹桃科 夹竹桃属', form:'常绿灌木', height:'2–5 m', canopy:'2–3 m', sun:'喜光', water:'耐旱耐湿', soil:'适应性强，耐盐碱', hardy:'耐寒性弱（-5 ℃）', orn:'花簇粉红艳丽、花期长达半年，抗污染能力强。', usage:'厂区绿篱、道路隔离带；教学重点警示植物。', note:'抗烟尘与有害气体，但全株含强心苷，严禁入口。', 
+        warn:{ type:'强心苷类毒性', part:'全株，叶与汁液最强', sym:'误食致恶心呕吐、心律失常；汁液接触皮肤引发红肿刺痛', tip:'考核需准确描述毒性；绿地应用远离儿童活动区，修剪作业须戴手套' },
+        img:'https://coze-coding-project.tos.coze.site/coze_storage_7685176549548720154/image/generate_image_b9fa2d30-3b65-4b56-bd26-f9d51a3f642f.jpeg?sign=1820891147-5b23f88176-0-9cf20dfedce342150486c91b943db00761b94e07de4f3bd24971ac1f72418c05' }
+    };
+
+    // 筛选 chip 单选（视觉态）
+    document.querySelectorAll('[data-group]').forEach(group => {
+      group.querySelectorAll('.chip').forEach(chip => chip.addEventListener('click', () => {
+        group.querySelectorAll('.chip').forEach(c => c.className = 'chip px-3 py-1.5 rounded-full text-xs font-medium bg-surface-container text-on-surface-variant hover:bg-surface-container-high transition-colors');
+        chip.className = 'chip px-3 py-1.5 rounded-full text-xs font-medium bg-primary text-on-primary transition-colors';
+      }));
+    });
+
+    // 搜索过滤（对既有节点过滤，不动态渲染）
+    const cards = [...document.querySelectorAll('.plant-card')];
+    document.getElementById('search').addEventListener('input', e => {
+      const q = e.target.value.trim().toLowerCase();
+      let n = 0;
+      cards.forEach(c => {
+        const hit = !q || (c.dataset.name + c.dataset.latin + c.dataset.tags).toLowerCase().includes(q);
+        c.style.display = hit ? '' : 'none';
+        if (hit) n++;
+      });
+      document.getElementById('count').textContent = n;
+      document.getElementById('empty').classList.toggle('hidden', n > 0);
+    });
+    document.getElementById('reset').addEventListener('click', () => {
+      document.getElementById('search').value = '';
+      cards.forEach(c => c.style.display = '');
+      document.getElementById('count').textContent = cards.length;
+      document.getElementById('empty').classList.add('hidden');
+    });
+
+    // 详情弹窗
+    const modal = document.getElementById('plant-modal');
+    const mimg = document.getElementById('modal-img');
+    function openModal(id) {
+      const p = PLANTS[id]; if (!p) return;
+      document.getElementById('modal-name').textContent = p.name;
+      document.getElementById('modal-latin').textContent = p.latin;
+      document.getElementById('m-alias').textContent = p.alias;
+      document.getElementById('m-family').textContent = p.family;
+      document.getElementById('m-form').textContent = p.form;
+      document.getElementById('m-height').textContent = p.height;
+      document.getElementById('m-canopy').textContent = p.canopy;
+      document.getElementById('m-sun').textContent = p.sun;
+      document.getElementById('m-water').textContent = p.water;
+      document.getElementById('m-soil').textContent = p.soil;
+      document.getElementById('m-hardy').textContent = p.hardy;
+      document.getElementById('m-orn').textContent = p.orn;
+      document.getElementById('m-usage').textContent = p.usage;
+      document.getElementById('m-note').textContent = p.note;
+      mimg.src = p.img; mimg.alt = p.name + '植株照片';
+      mimg.classList.remove('scale-[1.4]');
+      document.getElementById('m-safety').classList.toggle('hidden', !p.warn);
+      document.getElementById('modal-warn-badge').classList.toggle('hidden', !p.warn);
+      if (p.warn) {
+        document.getElementById('m-warn-type').textContent = p.warn.type;
+        document.getElementById('m-warn-part').textContent = p.warn.part;
+        document.getElementById('m-warn-sym').textContent = p.warn.sym;
+        document.getElementById('m-warn-tip').textContent = p.warn.tip;
+      }
+      document.getElementById('m-quiz').href = 'plant-quiz.html?plant_id=' + id;
+      document.getElementById('m-chat').href = 'chat.html?plant_id=' + id;
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal() { modal.classList.add('hidden'); document.body.style.overflow = ''; }
+    cards.forEach(c => c.addEventListener('click', () => openModal(c.dataset.id)));
+    modal.querySelectorAll('[data-close]').forEach(el => el.addEventListener('click', closeModal));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    // 全株 / 特写切换（特写放大裁切示意）
+    document.querySelectorAll('.img-toggle').forEach(btn => btn.addEventListener('click', () => {
+      mimg.classList.toggle('scale-[1.4]', btn.dataset.zoom === 'in');
+    }));
+  </script>
+</body>
+
+</html>

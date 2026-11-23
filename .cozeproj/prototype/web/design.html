@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>植景设计 · 植景小匠</title>
+
+  <link href="https://lf-code-agent.coze.cn/obj/x-ai-cn/fonts/google/google-all-fonts.css" rel="stylesheet" />
+  <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/jquery/jquery-3.7.1.min.js"></script>
+  <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/lucide/lucide-1.11.0.min.js"></script>
+  <script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/tailwindcss/tailwindcss-browser-4.2.4.min.js"></script>
+
+  <style type="text/tailwindcss">
+    @theme {
+      --color-primary:              #2F7A4F;
+      --color-primary-container:    #E3F0E8;
+      --color-on-primary:           #ffffff;
+      --color-on-primary-container: #1B4D31;
+      --color-background:                 #F7FAF8;
+      --color-surface-container-lowest:   #FFFFFF;
+      --color-surface:                    #FFFFFF;
+      --color-surface-container:          #EDF3EF;
+      --color-surface-container-high:     #E2EBE5;
+      --color-surface-container-highest:  #D7E2DA;
+      --color-on-surface:           #1C2B22;
+      --color-on-surface-variant:   #5C6E63;
+      --color-success:  #2AA05A;
+      --color-error:    #C0392B;
+      --color-warning:  #D97706;
+      --color-info:     #2563EB;
+      --color-outline:          #C2CFC6;
+      --color-outline-variant:  #DCE5DF;
+      --radius-sm:   0.375rem;
+      --radius-md:   0.5rem;
+      --radius-lg:   0.75rem;
+      --radius-xl:   1rem;
+      --radius-2xl:  1.25rem;
+      --radius-full: 9999px;
+      --shadow-card:   0 1px 3px rgba(28,43,34,0.10), 0 1px 2px rgba(28,43,34,0.06);
+      --shadow-float:  0 10px 25px rgba(28,43,34,0.14);
+      --shadow-dialog: 0 25px 50px rgba(28,43,34,0.18);
+      --font-sans:  "Inter", "Noto Sans SC", system-ui, sans-serif;
+      --font-latin: "Playfair Display", Georgia, serif;
+    }
+  </style>
+
+  <script>
+    document.addEventListener('error', function (e) {
+      const img = e.target;
+      if (img.tagName !== 'IMG' || img.dataset.fallback) return;
+      img.dataset.fallback = '1';
+      const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      const cat = img.getAttribute('data-category') || '其他';
+      const alt = img.getAttribute('alt') || '';
+      const label = esc(alt.length > 8 ? alt.slice(0, 8) + '…' : alt);
+      const icons = { '人物': '👤', '自然风景': '🏞', '动物': '🐾', '建筑城市': '🏙', '运动体育': '⚽', '交通工具': '🚗', '食物': '🍽', '服饰时尚': '👗', '商业科技': '💼', '游戏娱乐': '🎮', '艺术': '🎨', '其他': '🖼' };
+      const icon = icons[cat] || '🖼';
+      const w = img.width || 400, h = img.height || 300;
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}"><rect width="100%" height="100%" fill="%23f3f4f6"/><text x="50%" y="45%" text-anchor="middle" font-size="${Math.min(w, h) * 0.18}" dominant-baseline="central">${icon}</text><text x="50%" y="68%" text-anchor="middle" font-size="${Math.min(w, h) * 0.07}" fill="%239ca3af" font-family="system-ui,sans-serif" dominant-baseline="central">${label}</text></svg>`;
+      img.src = 'data:image/svg+xml,' + svg;
+    }, true);
+  </script>
+</head>
+
+<body class="bg-background text-on-surface font-sans min-h-screen">
+
+  <!-- @nav:start 导航组件（植景设计激活态） -->
+  <header class="sticky top-0 z-40 bg-surface shadow-card">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-6">
+      <a href="home.html" class="flex items-center gap-2 shrink-0">
+        <i data-lucide="sprout" class="w-6 h-6 text-primary"></i>
+        <span class="text-lg font-bold text-on-surface">植景小匠</span>
+      </a>
+      <nav class="hidden md:flex items-center gap-1">
+        <a href="catalog.html" class="px-3 py-2 rounded-md text-sm font-medium text-on-surface hover:bg-surface-container hover:text-primary transition-colors">植物图鉴</a>
+        <a href="design.html" aria-current="page" class="px-3 py-2 rounded-md text-sm font-medium bg-primary/10 text-primary">植景设计</a>
+        <a href="chat.html" class="px-3 py-2 rounded-md text-sm font-medium text-on-surface hover:bg-surface-container hover:text-primary transition-colors">智能问答</a>
+        <a href="admin.html" class="px-3 py-2 rounded-md text-sm font-medium text-on-surface hover:bg-surface-container hover:text-primary transition-colors">管理后台<span class="ml-1 align-top text-[10px] px-1.5 py-0.5 rounded-full bg-primary text-on-primary">教师</span></a>
+      </nav>
+      <div class="flex items-center gap-3">
+        <div class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary-container text-on-primary-container text-xs font-medium">
+          <i data-lucide="book-check" class="w-4 h-4"></i>
+          <span>已掌握 12/124</span>
+        </div>
+        <div class="relative group">
+          <button class="w-9 h-9 rounded-full bg-primary text-on-primary text-sm font-semibold flex items-center justify-center" aria-label="用户菜单">初</button>
+          <div class="absolute right-0 top-11 w-44 bg-surface rounded-lg shadow-float border border-outline-variant/20 py-1.5 hidden group-hover:block">
+            <div class="px-3 py-1.5 text-xs text-on-surface-variant border-b border-outline-variant/20 mb-1">小初 · 景观 2301 · 学生</div>
+            <a href="catalog.html" class="flex items-center gap-2 px-3 py-2 text-sm text-on-surface hover:bg-surface-container">我的进度</a>
+            <a href="admin.html" class="flex items-center gap-2 px-3 py-2 text-sm text-on-surface hover:bg-surface-container">管理后台</a>
+            <a href="home.html" class="flex items-center gap-2 px-3 py-2 text-sm text-on-surface hover:bg-surface-container">退出登录</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- @nav:end -->
+
+  <!-- @main-content:start -->
+  <main class="max-w-2xl mx-auto w-full px-6 py-16 text-center">
+    <div class="w-16 h-16 rounded-2xl bg-primary-container text-on-primary-container mx-auto flex items-center justify-center">
+      <i data-lucide="palette" class="w-8 h-8"></i>
+    </div>
+    <h1 class="text-2xl font-bold mt-5">植景设计</h1>
+    <p class="text-sm text-on-surface-variant mt-2 leading-relaxed">
+      二期将开放：植物配置方案设计、造景效果预览、方案分享与教师点评。<br>本学期请先用「植物图鉴」打好识别基础，再用「智能问答」巩固考点。
+    </p>
+    <div class="flex items-center justify-center gap-3 mt-6">
+      <button disabled class="px-5 py-2.5 rounded-md bg-primary/30 text-on-primary text-sm font-medium cursor-not-allowed">开始设计（未开放）</button>
+      <a href="catalog.html" class="px-5 py-2.5 rounded-md bg-surface-container text-sm font-medium text-on-surface hover:bg-surface-container-high transition-colors">先去植物图鉴</a>
+    </div>
+
+    <div class="relative rounded-xl overflow-hidden h-48 mt-10">
+      <img src="https://coze-coding-project.tos.coze.site/coze_storage_7685176549548720154/image/generate_image_23ac3ad3-a594-4206-8392-6d57986e9768.jpeg?sign=1820890857-90db6e4934-0-28de16db8e60b7430b2f5aece55516978816b42c97ca34123fd82cd541757b37" alt="繁花植物造景效果预览" data-category="自然风景" class="w-full h-full object-cover opacity-70">
+      <span class="absolute inset-x-0 bottom-3 mx-auto w-max bg-black/40 backdrop-blur-sm text-white text-xs rounded-full px-3 py-1.5">设计模块二期预览示意</span>
+    </div>
+  </main>
+  <!-- @main-content:end -->
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+
+</html>

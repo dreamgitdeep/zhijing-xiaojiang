@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>薄荷绿洲 · Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.cn">
+<link rel="stylesheet" href="https://fonts.googleapis.cn/css2?family=Poppins:wght@400;500;600;700&display=swap">
+<style>
+/* ============================================================
+   ① 令牌层 —— 换肤只改这一段
+   ============================================================ */
+:root{
+  /* 底与面 */
+  --page:        #EDF4F0;
+  --surface:     #FFFFFF;
+  --surface-mint:#E7F5EC;
+  --hero-from:   #E9F9EF;
+  --hero-to:     #D6F1E1;
+
+  /* 品牌绿 */
+  --green:       #3DBE7C;
+  --green-card:  #31B570;
+  --green-deep:  #2FAF6B;
+  --green-text:  #2E9E68;
+  --green-soft:  #7FD4A5;
+
+  /* 墨蓝辅助 */
+  --ink:         #1E2A4A;
+  --ink-2:       #3A4A6B;
+  --navy:        #2A3B66;
+  --navy-line:   #6E7CA0;
+
+  /* 中性 */
+  --muted:       #93A0A0;
+  --line:        #E6ECEA;
+  --track:       #E3E8E9;
+  --mint-track:  #D6EEE0;
+  --divider:     rgba(30,42,74,.08);
+
+  /* 圆角：只用 4 档 */
+  --r-hero: 18px;
+  --r-card: 16px;
+  --r-sm:   12px;
+  --r-pill: 999px;
+
+  /* 投影：绿调 · 低透明 · 大模糊 · 负偏移 */
+  --sh-card: 0 18px 40px -26px rgba(31,90,60,.30);
+  --sh-soft: 0 10px 24px -18px rgba(31,90,60,.22);
+}
+
+/* ============================================================
+   ② 基础层
+   ============================================================ */
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:'Poppins','Nunito','PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;
+  background:var(--page);
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  line-height:1.5;
+}
+.num{font-variant-numeric:tabular-nums}
+
+/* ============================================================
+   ③ 布局层：三栏 + 卡片网格
+   ============================================================ */
+.app{
+  display:grid;
+  grid-template-columns:212px minmax(0,1fr) 336px;
+  gap:20px;
+  padding:20px;
+  min-height:100vh;
+  align-items:start;
+}
+.main{display:grid;gap:20px;align-content:start;min-width:0}
+.row-2{display:grid;grid-template-columns:1.35fr 1fr;gap:20px;min-width:0}
+.row-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;min-width:0}
+
+/* ---------- 侧边导航：通高亮绿，右上右下大圆角 ---------- */
+.sidebar{
+  position:sticky;top:20px;
+  height:calc(100vh - 40px);
+  background:var(--green);
+  border-radius:28px;
+  padding:26px 14px;
+  display:flex;flex-direction:column;
+  box-shadow:var(--sh-card);
+}
+.brand{
+  display:flex;align-items:center;gap:9px;
+  padding:0 10px 4px;color:#fff;
+}
+.brand svg{width:34px;height:34px;flex:none}
+.brand-name{font-size:21px;font-weight:700;letter-spacing:.2px}
+
+.nav{margin-top:auto;display:flex;flex-direction:column;gap:6px}
+.nav-item{
+  display:flex;align-items:center;gap:12px;
+  height:44px;padding:0 16px;border-radius:var(--r-pill);
+  color:rgba(255,255,255,.78);
+  font-size:13.5px;font-weight:500;
+  text-decoration:none;cursor:pointer;
+  transition:background-color .2s ease-out,color .2s ease-out;
+}
+.nav-item svg{width:18px;height:18px;flex:none;stroke-width:1.8}
+.nav-item:hover{color:#fff;background:rgba(255,255,255,.10)}
+.nav-item.is-active{
+  background:#fff;color:var(--green-deep);
+  font-weight:600;box-shadow:var(--sh-soft);
+}
+.nav-item.is-active svg{stroke:var(--green-deep)}
+
+/* ---------- 顶栏 ---------- */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:2px 4px}
+.page-title{font-size:21px;font-weight:700;color:var(--ink);letter-spacing:.2px}
+.topbar-right{display:flex;align-items:center;gap:14px}
+.date{font-size:12px;color:var(--muted);font-weight:500}
+.search-btn{
+  width:40px;height:40px;flex:none;
+  display:grid;place-items:center;
+  background:#F1F4F3;border:none;border-radius:var(--r-sm);
+  color:var(--green-text);cursor:pointer;
+  transition:transform .18s ease-out,background-color .18s ease-out;
+}
+.search-btn:hover{background:#E7EDEA;transform:translateY(-1px)}
+.search-btn svg{width:17px;height:17px;stroke-width:1.9}
+
+/* ---------- 卡片通用 ---------- */
+.card{
+  background:var(--surface);
+  border-radius:var(--r-card);
+  box-shadow:var(--sh-card);
+  padding:22px;
+  min-width:0;
+  transition:transform .22s ease-out;
+}
+.card:hover{transform:translateY(-2px)}
+.card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.card-title{font-size:15.5px;font-weight:700;color:var(--ink)}
+.card-sub{font-size:12px;color:var(--muted);font-weight:500;display:flex;align-items:center;gap:5px;white-space:nowrap}
+.card-sub svg{width:13px;height:13px;stroke-width:2}
+
+/* ---------- Hero 横幅 ---------- */
+.hero{
+  position:relative;overflow:visible;
+  background:linear-gradient(120deg,var(--hero-from),var(--hero-to));
+  border-radius:var(--r-hero);
+  box-shadow:var(--sh-soft);
+  padding:28px 30px;
+  min-height:132px;
+  display:flex;flex-direction:column;justify-content:center;
+}
+.hero h2{font-size:20px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.hero p{font-size:13.5px;font-weight:600;color:var(--green-text)}
+.hero-art{
+  position:absolute;right:22px;bottom:-14px;
+  width:210px;height:170px;pointer-events:none;
+}
+.hero-art svg{width:100%;height:100%;overflow:visible}
+
+/* ---------- 柱状图卡 ---------- */
+.chart-card{display:flex;flex-direction:column}
+.chart-wrap{flex:1;min-width:0}
+.chart-wrap svg{width:100%;height:auto;display:block;overflow:visible}
+.legend{display:flex;align-items:center;gap:20px;margin-top:14px}
+.legend span{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--ink-2);font-weight:500}
+.dot{width:6px;height:6px;border-radius:50%;flex:none}
+
+/* ---------- 绿底折线卡 ---------- */
+.green-card{
+  background:var(--green-card);
+  color:#fff;
+  box-shadow:0 18px 40px -24px rgba(31,120,80,.46);
+  display:flex;flex-direction:column;
+}
+.green-card .card-title{color:#fff}
+.pill{
+  display:flex;align-items:center;gap:4px;
+  background:rgba(255,255,255,.18);
+  border-radius:var(--r-pill);
+  padding:5px 11px;font-size:11px;font-weight:600;color:#fff;
+  white-space:nowrap;
+}
+.pill svg{width:11px;height:11px;stroke-width:2.4}
+.big-figure{display:flex;align-items:baseline;gap:7px;margin:2px 0 6px}
+.big-figure b{font-size:38px;font-weight:700;line-height:1;letter-spacing:-.5px}
+.big-figure span{font-size:12px;font-weight:600;opacity:.8}
+.spark{flex:1;min-width:0;display:flex;align-items:flex-end}
+.spark svg{width:100%;height:auto;display:block;overflow:visible}
+
+/* ---------- 底部小卡 ---------- */
+.mini{height:116px;padding:16px 18px;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.mini.bg-green{background:var(--green-card);box-shadow:0 18px 40px -24px rgba(31,120,80,.46)}
+.mini.bg-navy{background:var(--navy);box-shadow:0 18px 40px -24px rgba(42,59,102,.5)}
+.mini-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.mini-title{display:flex;align-items:center;gap:7px;color:#fff;font-size:13.5px;font-weight:700}
+.mini-title svg{width:15px;height:15px;stroke-width:1.9}
+.delta{font-size:11px;font-weight:700;color:rgba(255,255,255,.82);white-space:nowrap}
+.mini-body{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-top:auto}
+.mini-fig{display:flex;align-items:baseline;gap:5px;color:#fff}
+.mini-fig b{font-size:24px;font-weight:700;line-height:1}
+.mini-fig span{font-size:11px;font-weight:600;opacity:.78}
+.mini-spark{width:74px;flex:none}
+.mini-spark svg{width:100%;height:auto;display:block;overflow:visible}
+
+/* ---------- 右侧档案栏 ---------- */
+.profile{
+  position:sticky;top:20px;
+  height:calc(100vh - 40px);
+  background:var(--surface-mint);
+  border-radius:var(--r-card);
+  box-shadow:var(--sh-card);
+  padding:28px 24px;
+  display:flex;flex-direction:column;align-items:center;
+  overflow:hidden;
+}
+.profile-top{display:flex;flex-direction:column;align-items:center}
+.avatar{
+  width:92px;height:92px;border-radius:var(--r-card);
+  overflow:hidden;box-shadow:var(--sh-soft);background:#CFEFE0;
+  flex:none;
+}
+.avatar svg{width:100%;height:100%;display:block}
+.p-name{margin-top:14px;font-size:17px;font-weight:700;color:var(--ink)}
+.p-role{margin-top:3px;font-size:12.5px;font-weight:600;color:var(--green-text)}
+
+.stats{
+  width:100%;margin-top:22px;
+  display:grid;grid-template-columns:repeat(3,1fr);align-items:start;
+}
+.stat{text-align:center;position:relative;min-width:0}
+.stat + .stat::before{
+  content:"";position:absolute;left:0;top:4px;bottom:4px;
+  width:1px;background:var(--divider);
+}
+.stat b{display:block;font-size:16px;font-weight:700;color:var(--ink)}
+.stat span{display:block;margin-top:2px;font-size:10.5px;font-weight:600;color:var(--green-text)}
+
+.sect{width:100%;margin-top:26px}
+.sect-title{font-size:15px;font-weight:700;color:var(--ink)}
+
+.goal{padding:13px 0;border-bottom:1px solid var(--divider)}
+.goal:first-of-type{padding-top:14px}
+.goal-row{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.goal-name{font-size:13.5px;font-weight:600;color:var(--ink);min-width:0;overflow-wrap:break-word}
+.goal-val{font-size:11px;color:var(--muted);white-space:nowrap;flex:none}
+.bar{height:6px;border-radius:var(--r-pill);background:var(--mint-track);margin-top:8px;overflow:hidden}
+.bar i{
+  display:block;height:100%;border-radius:var(--r-pill);
+  background:var(--green-card);transform-origin:left center;
+  transform:scaleX(var(--w));
+  animation:fill .9s cubic-bezier(.22,.8,.3,1) both;
+}
+/* 填充比例 = 真实值：Sleep 92/240 · Water 50/160 · Weight 4.5/5 */
+.bar i[data-w="38"]{--w:.3833}
+.bar i[data-w="31"]{--w:.3125}
+.bar i[data-w="90"]{--w:.9}
+@keyframes fill{from{transform:scaleX(0)}to{transform:scaleX(var(--w))}}
+
+.task{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:13px 0;border-bottom:1px solid var(--divider);
+}
+.task-main{flex:1;min-width:0}
+.task-name{font-size:13.5px;font-weight:600;color:var(--ink);overflow-wrap:break-word}
+.task-time{margin-top:2px;font-size:11px;font-weight:500;color:var(--green-text)}
+.check{
+  width:20px;height:20px;flex:none;border-radius:6px;
+  background:var(--green-card);display:grid;place-items:center;
+  margin-top:1px;
+}
+.check svg{width:12px;height:12px;stroke:#fff;stroke-width:3}
+
+/* ============================================================
+   ④ 响应式
+   ============================================================ */
+@media (max-width:1180px){
+  .app{grid-template-columns:76px minmax(0,1fr);gap:16px;padding:16px}
+  .sidebar{padding:24px 10px;align-items:center}
+  .brand{padding:0}
+  .brand-name{display:none}
+  .nav-item{justify-content:center;padding:0;width:48px}
+  .nav-item span{display:none}
+  .profile{
+    grid-column:1 / -1;position:static;height:auto;
+    flex-direction:row;flex-wrap:wrap;align-items:center;
+    justify-content:center;gap:20px 28px;padding:22px;
+  }
+  .profile-top{flex-direction:row;gap:14px}
+  .p-name,.p-role{margin:0}
+  .stats{margin:0;width:auto;flex:1;min-width:260px}
+  .sect{margin:0;flex:1;min-width:260px}
+}
+@media (max-width:860px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .sidebar{
+    position:static;width:100%;height:auto;border-radius:var(--r-card);
+    flex-direction:row;align-items:center;justify-content:space-between;
+    padding:12px 14px;
+  }
+  .nav{margin:0;flex-direction:row;overflow-x:auto;gap:4px}
+  .nav-item{width:44px;height:44px}
+  .row-2,.row-3{grid-template-columns:minmax(0,1fr)}
+  .hero-art{width:132px;height:108px;right:6px;opacity:.9}
+  .hero{padding:22px 20px;min-height:118px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <!-- ================= 侧边导航 ================= -->
+  <aside class="sidebar">
+    <div class="brand">
+      <svg viewBox="0 0 40 40" fill="none" aria-hidden="true">
+        <g stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 33c0-7 0-11 0-14"/>
+          <path d="M20 21c-6 0-9-4-9-9 5 0 9 3 9 9z"/>
+          <path d="M20 21c6 0 9-4 9-9-5 0-9 3-9 9z"/>
+          <path d="M20 19c-3-4-3-8 0-12 3 4 3 8 0 12z"/>
+        </g>
+      </svg>
+      <span class="brand-name">Oasis</span>
+    </div>
+
+    <nav class="nav">
+      <a class="nav-item is-active" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg>
+        <span>Dashboard</span>
+      </a>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>
+        <span>Schedule</span>
+      </a>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.2 2"/></svg>
+        <span>Activity</span>
+      </a>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10h16a8 8 0 0 1-16 0z"/><path d="M3 19h18"/></svg>
+        <span>Meals</span>
+      </a>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.4-5.4A8 8 0 1 1 21 12z"/></svg>
+        <span>Chat</span>
+      </a>
+      <a class="nav-item" href="#">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg>
+        <span>Profile</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ================= 中间主区 ================= -->
+  <main class="main">
+
+    <!-- 顶栏 -->
+    <header class="topbar">
+      <h1 class="page-title">Dashboard</h1>
+      <div class="topbar-right">
+        <span class="date">15 Nov 2019, Friday</span>
+        <button class="search-btn" aria-label="搜索">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5 21 21"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Hero 横幅 -->
+    <section class="hero">
+      <h2>Hello Jane</h2>
+      <p>Today it's a great day to be fit!</p>
+      <!-- 扁平矢量插画 · 无文字 -->
+      <div class="hero-art">
+        <svg viewBox="0 0 210 170">
+          <path d="M96 150c22 4 52 2 74-6 8-3 10-10 4-14-24-16-56-20-78-14-6 2-6 12 0 14z" fill="#BFEBD5"/>
+          <g stroke-linecap="round" stroke-linejoin="round" fill="none">
+            <!-- 远腿 -->
+            <path d="M104 116 148 132 186 128" stroke="#3A4A6B" stroke-width="15"/>
+            <path d="M186 128 197 127" stroke="#F0B98A" stroke-width="9"/>
+            <!-- 躯干 -->
+            <path d="M104 116 92 82" stroke="#31B570" stroke-width="24"/>
+            <!-- 近腿 -->
+            <path d="M104 118 150 142 194 140" stroke="#2A3B66" stroke-width="16"/>
+            <path d="M194 140 205 139" stroke="#F0B98A" stroke-width="9"/>
+            <!-- 手臂 -->
+            <path d="M92 84 112 52 104 20" stroke="#31B570" stroke-width="11"/>
+            <path d="M88 84 68 78 52 60" stroke="#7FD4A5" stroke-width="10"/>
+            <path d="M104 20 101 10" stroke="#F0B98A" stroke-width="8"/>
+            <path d="M52 60 46 53" stroke="#F0B98A" stroke-width="7"/>
+          </g>
+          <circle cx="90" cy="70" r="12" fill="#F5C79B"/>
+          <path d="M78 68a12 12 0 0 1 22-8c-6-3-16-1-22 8z" fill="#2A3B66"/>
+        </svg>
+      </div>
+    </section>
+
+    <!-- 图表两列 -->
+    <div class="row-2">
+
+      <!-- 柱状图 -->
+      <section class="card chart-card">
+        <div class="card-head">
+          <h2 class="card-title">Yoga Activity</h2>
+          <span class="card-sub">Last week
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </span>
+        </div>
+        <div class="chart-wrap">
+          <svg viewBox="0 0 560 226" role="img" aria-label="近一周瑜伽活动堆叠柱状图">
+            <!-- 星期标签 -->
+            <g font-size="11.5" fill="#93A0A0" font-weight="500" text-anchor="middle">
+              <text x="59.7" y="18">Mon</text><text x="134" y="18">Tue</text><text x="208.3" y="18">Wed</text>
+              <text x="282.6" y="18">Thu</text><text x="356.9" y="18">Fri</text><text x="431.1" y="18">Sat</text><text x="505.4" y="18">Sun</text>
+            </g>
+            <!-- 轨道 + 堆叠段：下绿上墨蓝，段间 2px -->
+            <g>
+              <!-- Tue -->
+              <rect x="55.7" y="34" width="8" height="172" rx="4" fill="#E3E8E9"/>
+              <rect x="55.7" y="118" width="8" height="88" rx="4" fill="#3DBE7C"/>
+              <rect x="55.7" y="66" width="8" height="50" rx="4" fill="#2A3B66"/>
+              <!-- Wed -->
+              <rect x="130" y="34" width="8" height="172" rx="4" fill="#E3E8E9"/>
+              <rect x="130" y="154" width="8" height="52" rx="4" fill="#3DBE7C"/>
+              <rect x="130" y="52" width="8" height="100" rx="4" fill="#2A3B66"/>
+              <!-- Thu -->
+              <rect x="204.3" y="34" width="8" height="172" rx="4" fill="#E3E8E9"/>
+              <rect x="204.3" y="141" width="8" height="65" rx="4" fill="#3DBE7C"/>
+              <rect x="204.3" y="77" width="8" height="62" rx="4" fill="#2A3B66"/>
+              <!-- Fri -->
+              <rect x="278.6" y="34" width="8" height="172" rx="4" fill="#E3E8E9"/>
+              <rect x="278.6" y="137" width="8" height="69" rx="4" fill="#3DBE7C"/>
+              <rect x="278.6" y="80" width="8" height="55" rx="4" fill="#2A3B66"/>
+              <!-- Sat -->
+              <rect x="352.9" y="34" width="8" height="172" rx="4" fill="#E3E8E9"/>
+              <rect x="352.9" y="104" width="8" height="102" rx="4" fill="#3DBE7C"/>
+              <rect x="352.9" y="64" width="8" height="38" rx="4" fill="#2A3B66"/>
+              <!-- Sun -->
+              <rect x="427.1" y="34" width="8" height="172" rx="4" fill="#E3E8E9"/>
+              <rect x="427.1" y="120" width="8" height="86" rx="4" fill="#3DBE7C"/>
+              <rect x="427.1" y="82" width="8" height="36" rx="4" fill="#2A3B66"/>
+            </g>
+            <line x1="40" y1="206" x2="520" y2="206" stroke="#E6ECEA" stroke-width="1"/>
+          </svg>
+        </div>
+        <div class="legend">
+          <span><i class="dot" style="background:#3DBE7C"></i>Yoga</span>
+          <span><i class="dot" style="background:#2A3B66"></i>Rest</span>
+          <span><i class="dot" style="background:#E3E8E9"></i>Daily Goal</span>
+        </div>
+      </section>
+
+      <!-- 绿底折线 -->
+      <section class="card green-card">
+        <div class="card-head">
+          <h2 class="card-title">Meal Statistic</h2>
+          <span class="pill">15 / 11
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+          </span>
+        </div>
+        <div class="big-figure"><b class="num">230</b><span>kcal</span></div>
+        <div class="spark">
+          <svg viewBox="0 0 300 128" role="img" aria-label="餐食统计平滑曲线">
+            <path d="M2 66C24 58 32 28 52 30s32 40 52 34 24-44 46-40 28 42 48 40"
+                  fill="none" stroke="rgba(255,255,255,.16)" stroke-width="5" stroke-linecap="round"/>
+            <path d="M2 66C24 58 32 28 52 30s32 40 52 34 24-44 46-40 28 42 48 40"
+                  fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-opacity=".92"/>
+            <circle cx="150" cy="24" r="8" fill="#fff" fill-opacity=".22"/>
+            <circle cx="150" cy="24" r="4" fill="#fff"/>
+            <g font-size="10.5" fill="rgba(255,255,255,.55)" font-weight="500" text-anchor="middle">
+              <text x="24" y="122">Salad</text><text x="82" y="122">Juice</text><text x="150" y="122">Food</text><text x="216" y="122">Food</text><text x="272" y="122">Water</text>
+            </g>
+          </svg>
+        </div>
+      </section>
+    </div>
+
+    <!-- 底部三张小卡 -->
+    <div class="row-3">
+      <section class="card mini bg-green">
+        <div class="mini-head">
+          <span class="mini-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.5-7-9.5A4 4 0 0 1 12 7a4 4 0 0 1 7 3.5c0 5-7 9.5-7 9.5z"/></svg>
+            Heart Rate
+          </span>
+          <span class="delta">+12%</span>
+        </div>
+        <div class="mini-body">
+          <span class="mini-fig"><b class="num">75</b><span>BPM</span></span>
+          <span class="mini-spark">
+            <svg viewBox="0 0 74 26"><path d="M1 20c8 1 10-13 17-13s8 15 15 13 9-9 16-8 12 8 24 5" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2" stroke-linecap="round"/></svg>
+          </span>
+        </div>
+      </section>
+
+      <section class="card mini bg-navy">
+        <div class="mini-head">
+          <span class="mini-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4.5 13H11l-1 9 8.5-11H12l1-9z"/></svg>
+            Energy Burn
+          </span>
+          <span class="delta">+18%</span>
+        </div>
+        <div class="mini-body">
+          <span class="mini-fig"><b class="num">120</b><span>kcal</span></span>
+          <span class="mini-spark">
+            <svg viewBox="0 0 74 26"><path d="M1 8c7-2 9 12 16 11s9-13 16-11 8 15 15 12 13-9 25-6" fill="none" stroke="#6E7CA0" stroke-width="2" stroke-linecap="round"/></svg>
+          </span>
+        </div>
+      </section>
+
+      <section class="card mini bg-navy">
+        <div class="mini-head">
+          <span class="mini-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18c2-1 3.5-4 6-4s3 2.5 5.5 2.5S17 13 19 13s2 2 2 2"/><circle cx="16.5" cy="7.5" r="2.2"/><path d="M4 21h16"/></svg>
+            Swimming
+          </span>
+          <span class="delta">+30%</span>
+        </div>
+        <div class="mini-body">
+          <span class="mini-fig"><b class="num">01</b><span>hrs</span></span>
+          <span class="mini-spark">
+            <svg viewBox="0 0 74 26"><path d="M1 20c6-6 10 2 16-3s9-11 16-7 10 9 16 4 12-6 24-3" fill="none" stroke="#6E7CA0" stroke-width="2" stroke-linecap="round"/></svg>
+          </span>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- ================= 右侧档案栏 ================= -->
+  <aside class="profile">
+    <div class="profile-top">
+      <div class="avatar">
+        <svg viewBox="0 0 92 92">
+          <rect width="92" height="92" fill="#CFEFE0"/>
+          <circle cx="46" cy="36" r="15" fill="#F5C79B"/>
+          <path d="M31 34a15 15 0 0 1 28-6c-7-4-20-2-28 6z" fill="#2A3B66"/>
+          <path d="M20 92c0-15 12-25 26-25s26 10 26 25z" fill="#2A3B66"/>
+          <path d="M37 68h18l-9 14z" fill="#3DBE7C"/>
+        </svg>
+      </div>
+      <p class="p-name">Janee Mortensen</p>
+      <p class="p-role">Trainer</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><b class="num">5.3 ft</b><span>Height</span></div>
+      <div class="stat"><b class="num">75 K</b><span>Weight</span></div>
+      <div class="stat"><b class="num">25 Y</b><span>Age</span></div>
+    </div>
+
+    <section class="sect">
+      <h3 class="sect-title">Your Monthly Goals</h3>
+      <div class="goal">
+        <div class="goal-row"><span class="goal-name">Sleep</span><span class="goal-val num">92 / 240 hrs</span></div>
+        <div class="bar"><i data-w="38"></i></div>
+      </div>
+      <div class="goal">
+        <div class="goal-row"><span class="goal-name">Drink Water</span><span class="goal-val num">50 / 160 ltr</span></div>
+        <div class="bar"><i data-w="31"></i></div>
+      </div>
+      <div class="goal">
+        <div class="goal-row"><span class="goal-name">Lose Weight</span><span class="goal-val num">4.5 / 5 kg</span></div>
+        <div class="bar"><i data-w="90"></i></div>
+      </div>
+    </section>
+
+    <section class="sect">
+      <h3 class="sect-title">Task</h3>
+      <div class="task">
+        <div class="task-main">
+          <p class="task-name">Drinking Water</p>
+          <p class="task-time num">15/11/2019 · 5:00 pm</p>
+        </div>
+        <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4.5 4.5L19 7"/></svg></span>
+      </div>
+      <div class="task">
+        <div class="task-main">
+          <p class="task-name">Morning Stretch</p>
+          <p class="task-time num">16/11/2019 · 7:30 am</p>
+        </div>
+        <span class="check"><svg viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4.5 4.5L19 7"/></svg></span>
+      </div>
+    </section>
+  </aside>
+
+</div>
+
+</body>
+</html>

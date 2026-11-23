@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>植景小匠 · 登录</title>
+<link href="https://lf-code-agent.coze.cn/obj/x-ai-cn/fonts/google/google-all-fonts.css" rel="stylesheet" />
+<link href="https://lf-code-agent.coze.cn/obj/x-ai-cn/fonts/google/google-all-fonts.css" rel="stylesheet" />
+<script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/jquery/jquery-3.7.1.min.js"></script>
+<script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/lucide/lucide-1.11.0.min.js"></script>
+<script src="https://lf-code-agent.coze.cn/obj/x-ai-cn/cdn/tailwindcss/tailwindcss-browser-4.2.4.min.js"></script>
+<style type="text/tailwindcss">
+  @theme {
+      --color-primary:              #2F7A4F;
+      --color-primary-container:    #E3F0E8;
+      --color-on-primary:           #ffffff;
+      --color-on-primary-container: #1B4D31;
+      --color-background:                 #F7FAF8;
+      --color-surface-container-lowest:   #FFFFFF;
+      --color-surface:                    #FFFFFF;
+      --color-surface-container:          #EDF3EF;
+      --color-surface-container-high:     #E2EBE5;
+      --color-surface-container-highest:  #D7E2DA;
+      --color-on-surface:           #1C2B22;
+      --color-on-surface-variant:   #5C6E63;
+      --color-success:  #2AA05A;
+      --color-error:    #C0392B;
+      --color-warning:  #D97706;
+      --color-info:     #2563EB;
+      --color-outline:          #C2CFC6;
+      --color-outline-variant:  #DCE5DF;
+      --radius-sm:   0.375rem;
+      --radius-md:   0.5rem;
+      --radius-lg:   0.75rem;
+      --radius-xl:   1rem;
+      --radius-2xl:  1.25rem;
+      --radius-full: 9999px;
+      --shadow-card:   0 1px 3px rgba(28,43,34,0.10), 0 1px 2px rgba(28,43,34,0.06);
+      --shadow-float:  0 10px 25px rgba(28,43,34,0.14);
+      --shadow-dialog: 0 25px 50px rgba(28,43,34,0.18);
+      --font-sans:  "Inter", "Noto Sans SC", system-ui, sans-serif;
+      --font-latin: "Playfair Display", Georgia, serif;
+    }
+
+  .school-badge {
+    filter: drop-shadow(0 2px 12px rgba(255, 255, 255, 0.95)) drop-shadow(0 4px 18px rgba(26, 77, 46, 0.25));
+  }
+  .enter-btn {
+    padding: 14px 48px;
+    font-size: 18px;
+    color: #fff;
+    background: linear-gradient(135deg, #2d6a4f 0%, #1a4d2e 100%);
+    border: none;
+    border-radius: 50px;
+    letter-spacing: 4px;
+    box-shadow: 0 4px 15px rgba(26, 77, 46, 0.3);
+    transition: all 0.3s ease;
+  }
+  .enter-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(26, 77, 46, 0.4);
+  }
+</style>
+<script>
+  document.addEventListener('error', function(e){
+    var el = e.target;
+    if (el && el.tagName === 'IMG' && el.dataset.category) {
+      var w = 800, h = 600;
+      el.src = 'data:image/svg+xml;utf8,' + encodeURIComponent(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="'+w+'" height="'+h+'">'+
+        '<rect width="100%" height="100%" fill="#EDF3EF"/>'+
+        '<text x="50%" y="50%" fill="#5C6E63" font-size="28" text-anchor="middle" dominant-baseline="middle">'+el.dataset.category+'</text>'+
+        '</svg>');
+    }
+  }, true);
+</script>
+</head>
+
+<body class="bg-background font-sans text-on-surface">
+
+<main class="relative h-screen w-full overflow-hidden bg-background">
+
+  <!-- 浅绿肌理背景 -->
+  <div class="absolute inset-0"
+       style="background: radial-gradient(1100px 560px at 18% 8%, rgba(47,122,79,0.09), transparent 70%), radial-gradient(900px 520px at 88% 92%, rgba(47,122,79,0.07), transparent 70%);"></div>
+
+  <!-- 底图：社区植物造景全景（含书法标题与校训） -->
+  <div class="absolute inset-0 z-0">
+    <img src="https://coze-coding-project.tos.coze.site/coze_storage_7685176549548720154/home-hero_d1cc5f85.jpg?sign=1789467668-5fdc196efe-0-7eed40f23a90ee9f148f506c6116c2caa0b6a14f96dcde65d7da533896143689"
+         data-category="社区植物造景" alt="植景小匠 · 社区植物造景" class="absolute inset-0 h-full w-full object-cover object-center" />
+  </div>
+
+  <!-- 顶部中央：校徽 -->
+  <div class="absolute inset-x-0 top-6 z-10 flex justify-center lg:top-8">
+    <img src="https://coze-coding-project.tos.coze.site/coze_storage_7685176549548720154/prototype/school-badge_4fbd02ca.png?sign=1791969665-72784f2b1f-0-8c70456e61a4efa51100133950a513de4e7295b78c1a06fdf330441c43823d00"
+         data-category="校徽" alt="上海农林职业学院校徽" class="school-badge h-28 w-28 lg:h-32 lg:w-32" />
+  </div>
+
+  <!-- 居中靠下：进入应用 -->
+  <div class="absolute inset-x-0 bottom-[9%] z-10 flex flex-col items-center gap-3">
+    <button id="open-auth" type="button"
+            class="enter-btn group flex items-center gap-2.5 shadow-float transition-all duration-300 hover:shadow-dialog">
+      进入应用
+      <i data-lucide="arrow-right" class="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1"></i>
+    </button>
+    <p class="text-xs text-on-surface-variant/80">学生进入课程学习 · 教师进入管理端</p>
+  </div>
+
+</main>
+
+<!-- 登录 / 注册浮层（点击「进入应用」上浮） -->
+<div id="auth-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 p-4 backdrop-blur-sm">
+  <div id="auth-card" class="relative w-[440px] max-w-full translate-y-8 rounded-2xl bg-surface p-8 opacity-0 shadow-dialog transition-all duration-300 ease-out">
+
+    <button type="button" id="close-auth" class="absolute right-4 top-4 text-on-surface-variant/60 transition-colors hover:text-on-surface">
+      <i data-lucide="x" class="h-5 w-5"></i>
+    </button>
+
+    <!-- 品牌头 -->
+    <div class="mb-6 flex items-center gap-3">
+      <img src="https://coze-coding-project.tos.coze.site/coze_storage_7685176549548720154/prototype/school-badge_4fbd02ca.png?sign=1791969665-72784f2b1f-0-8c70456e61a4efa51100133950a513de4e7295b78c1a06fdf330441c43823d00"
+           data-category="校徽" alt="校徽" class="h-11 w-11" />
+      <div>
+        <p class="text-xl font-bold leading-tight text-on-surface">植景小匠</p>
+        <p class="text-xs text-on-surface-variant">植物造景课程平台</p>
+      </div>
+    </div>
+
+    <!-- Tab 切换 -->
+    <div class="mb-6 grid grid-cols-2 rounded-lg bg-surface-container p-1">
+      <button id="tab-login" class="rounded-md bg-surface px-4 py-2 text-sm font-semibold text-primary shadow-card">登录</button>
+      <button id="tab-register" class="rounded-md px-4 py-2 text-sm font-medium text-on-surface-variant">注册</button>
+    </div>
+
+    <!-- 登录表单 -->
+    <div id="panel-login">
+      <div class="space-y-4">
+        <div>
+          <label class="mb-1.5 block text-sm font-medium text-on-surface">学号 / 教师账号</label>
+          <input type="text" placeholder="请输入学号或教师账号"
+                 class="w-full rounded-lg border border-outline-variant/30 bg-surface-container px-4 py-3 text-sm text-on-surface placeholder:text-on-surface-variant/40 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30" />
+        </div>
+        <div>
+          <label class="mb-1.5 block text-sm font-medium text-on-surface">密码</label>
+          <div class="relative">
+            <input type="password" placeholder="请输入密码"
+                   class="w-full rounded-lg border border-outline-variant/30 bg-surface-container px-4 py-3 pr-12 text-sm text-on-surface placeholder:text-on-surface-variant/40 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30" />
+            <button type="button" class="absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant/60">
+              <i data-lucide="eye-off" class="h-4 w-4"></i>
+            </button>
+          </div>
+        </div>
+        <div class="flex items-center justify-between">
+          <label class="flex cursor-pointer items-center gap-2 text-sm text-on-surface-variant">
+            <input type="checkbox" class="h-4 w-4 rounded border-outline-variant/40 accent-[#2F7A4F]" />
+            记住密码
+          </label>
+          <button type="button" id="open-reset" class="text-sm text-primary hover:underline">忘记密码？</button>
+        </div>
+        <button type="button" onclick="location.href='catalog.html'"
+                class="w-full rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-on-primary transition-colors hover:bg-primary/90">
+          登录
+        </button>
+      </div>
+    </div>
+
+    <!-- 注册表单：先选角色 -->
+    <div id="panel-register" class="hidden">
+      <div class="space-y-4">
+
+        <!-- 角色选择（最上方） -->
+        <div>
+          <label class="mb-1.5 block text-sm font-medium text-on-surface">选择角色</label>
+          <div class="grid grid-cols-2 gap-3">
+            <button type="button" id="role-student"
+                    class="flex items-center justify-center gap-2 rounded-lg border border-primary bg-primary-container px-4 py-3 text-sm font-semibold text-on-primary-container">
+              <i data-lucide="graduation-cap" class="h-4 w-4"></i>学生
+            </button>
+            <button type="button" id="role-teacher"
+                    class="flex items-center justify-center gap-2 rounded-lg border border-outline-variant/30 bg-surface px-4 py-3 text-sm font-medium text-on-surface-variant">
+              <i data-lucide="school" class="h-4 w-4"></i>教师
+            </button>
+          </div>
+        </div>
+
+        <!-- 学生字段 -->
+        <div id="fields-student" class="space-y-4">
+          <div>
+            <label class="mb-1.5 block text-sm font-medium text-on-surface">姓名</label>
+            <input type="text" placeholder="请输入姓名"
+                   class="w-full rounded-lg border border-outline-variant/30 bg-surface-container px-4 py-3 text-sm text-on-surface placeholder:text-on-surface-variant/40 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30" />
+          </div>
+          <div>
+            <label class="mb-1.5 block text-sm font-medium text-on-surface">学号</label>
+            <input type="text" placeholder="请输入学号"
+                   class="w-full rounded-lg border border-outline-variant/30 bg-surface-container px-4 py-3 text-sm text-on-surface placeholder:text-on-surface-variant/40 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30" />
+          </div>
+          <div>
+            <label class="mb-1.5 block text-sm font-medium text-on-surface">班级邀请码 <span class="font-normal text-on-surface-variant/70">（选填）</span></label>
+            <input type="text" placeholder="向任课老师获取，如 JG2301"
+                   class="w-full rounded-lg border border-outline-variant/30 bg-surface-container px-4 py-3 text-sm text-on-surface placeholder:text-on-surface-variant/40 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30" />
+          </div>
+        </div>
+
+        <!-- 教师字段 -->
+        <div id="fields-teacher" class="hidden space-y-4">
+          <div>
+            <label class="mb-1.5 block text-sm font-medium text-on-surface">姓名</label>
+            <input type="text" placeholder="请输入姓名"
+                   class="w-full rounded-lg border border-outline-variant/30 bg-surface-container px-4 py-3 text-sm text-on-surface placeholder:text-on-surface-variant/40 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30" />
+          </div>
+          <div>
+            <label class="mb-1.5 block text-sm font-medium text-on-surface">账号</label>
+            <input type="text" placeholder="用于登录的账号，如工号或拼音"
+                   class="w-full rounded-lg border border-outline-variant/30 bg-surface-container px-4 py-3 text-sm text-on-surface placeholder:text-on-surface-variant/40 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30" />
+          </div>
+        </div>
+
+        <!-- 公共字段 -->
+        <div class="space-y-4">
+          <div>
+            <label class="mb-1.5 block text-sm font-medium text-on-surface">邮箱</label>
+            <input type="email" placeholder="用于接收课程通知"
+                   class="w-full rounded-lg border border-outline-variant/30 bg-surface-container px-4 py-3 text-sm text-on-surface placeholder:text-on-surface-variant/40 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30" />
+          </div>
+          <div>
+            <label class="mb-1.5 block text-sm font-medium text-on-surface">密码</label>
+            <input type="password" placeholder="至少 6 位"
+                   class="w-full rounded-lg border border-outline-variant/30 bg-surface-container px-4 py-3 text-sm text-on-surface placeholder:text-on-surface-variant/40 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30" />
+          </div>
+          <button type="button" id="btn-register"
+                  class="w-full rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-on-primary transition-colors hover:bg-primary/90">
+            注册
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- 找回密码弹窗 -->
+<div id="reset-modal" class="fixed inset-0 z-[60] hidden items-center justify-center bg-black/40 backdrop-blur-sm">
+  <div class="w-[400px] max-w-[calc(100vw-2rem)] rounded-2xl bg-surface p-8 shadow-dialog">
+    <div class="mb-6 flex items-start justify-between">
+      <div>
+        <p class="text-lg font-bold text-on-surface">找回密码</p>
+        <p class="mt-1 text-xs text-on-surface-variant">通过学号 / 账号与姓名验证身份后设置新密码</p>
+      </div>
+      <button type="button" id="close-reset" class="text-on-surface-variant/60 hover:text-on-surface">
+        <i data-lucide="x" class="h-5 w-5"></i>
+      </button>
+    </div>
+    <div class="space-y-4">
+      <div>
+        <label class="mb-1.5 block text-sm font-medium text-on-surface">学号 / 教师账号</label>
+        <input type="text" placeholder="请输入注册时的学号或账号"
+               class="w-full rounded-lg border border-outline-variant/30 bg-surface-container px-4 py-3 text-sm text-on-surface placeholder:text-on-surface-variant/40 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30" />
+      </div>
+      <div>
+        <label class="mb-1.5 block text-sm font-medium text-on-surface">姓名</label>
+        <input type="text" placeholder="请输入注册时的姓名"
+               class="w-full rounded-lg border border-outline-variant/30 bg-surface-container px-4 py-3 text-sm text-on-surface placeholder:text-on-surface-variant/40 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30" />
+      </div>
+      <div>
+        <label class="mb-1.5 block text-sm font-medium text-on-surface">新密码</label>
+        <input type="password" placeholder="至少 6 位"
+               class="w-full rounded-lg border border-outline-variant/30 bg-surface-container px-4 py-3 text-sm text-on-surface placeholder:text-on-surface-variant/40 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30" />
+      </div>
+      <div>
+        <label class="mb-1.5 block text-sm font-medium text-on-surface">确认新密码</label>
+        <input type="password" placeholder="再次输入新密码"
+               class="w-full rounded-lg border border-outline-variant/30 bg-surface-container px-4 py-3 text-sm text-on-surface placeholder:text-on-surface-variant/40 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30" />
+      </div>
+      <button type="button" id="close-reset-2"
+              class="w-full rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-on-primary transition-colors hover:bg-primary/90">
+        重置密码
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  lucide.createIcons();
+
+  // mask 鼠标跟随（坐标相对不规则图块；进入跟随、离开自动扫描）
+  var stage = document.getElementById('mask-stage');
+  var maskLayer = document.getElementById('mask-layer');
+  var targetX = 50, targetY = 45, curX = 50, curY = 45, following = false, rafId = null;
+
+  function apply() {
+    curX += (targetX - curX) * 0.16;
+    curY += (targetY - curY) * 0.16;
+    maskLayer.style.setProperty('--mx', curX + '%');
+    maskLayer.style.setProperty('--my', curY + '%');
+    rafId = requestAnimationFrame(apply);
+  }
+  rafId = requestAnimationFrame(apply);
+
+  // 未交互时自动扫描
+  var scanT = 0;
+  var scanTimer = setInterval(function(){
+    if (following) return;
+    scanT += 0.016;
+    targetX = 50 + 28 * Math.sin(scanT * 0.7);
+    targetY = 45 + 16 * Math.sin(scanT * 1.1);
+  }, 16);
+
+  function stageMove(clientX, clientY) {
+    var r = stage.getBoundingClientRect();
+    following = true;
+    targetX = Math.min(97, Math.max(3, ((clientX - r.left) / r.width) * 100));
+    targetY = Math.min(97, Math.max(3, ((clientY - r.top) / r.height) * 100));
+  }
+  stage.addEventListener('mousemove', function(e){ stageMove(e.clientX, e.clientY); });
+  stage.addEventListener('mouseleave', function(){ following = false; });
+  // 触屏降级：触摸点跟随，松手恢复自动扫描
+  stage.addEventListener('touchmove', function(e){ stageMove(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+  stage.addEventListener('touchend', function(){ following = false; });
+
+  // 进入应用 → 登录/注册卡上浮
+  $('#open-auth').on('click', function(){
+    $('#auth-modal').removeClass('hidden').addClass('flex');
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){
+        $('#auth-card').removeClass('translate-y-8 opacity-0');
+      });
+    });
+  });
+  function closeAuth(){
+    $('#auth-card').addClass('translate-y-8 opacity-0');
+    setTimeout(function(){ $('#auth-modal').addClass('hidden').removeClass('flex'); }, 280);
+  }
+  $('#close-auth').on('click', closeAuth);
+  $('#auth-modal').on('click', function(e){ if (e.target === this) closeAuth(); });
+
+  // 登录 / 注册 Tab
+  $('#tab-login').on('click', function(){
+    $(this).addClass('bg-surface text-primary shadow-card font-semibold').removeClass('text-on-surface-variant');
+    $('#tab-register').removeClass('bg-surface text-primary shadow-card font-semibold').addClass('text-on-surface-variant');
+    $('#panel-login').removeClass('hidden');
+    $('#panel-register').addClass('hidden');
+  });
+  $('#tab-register').on('click', function(){
+    $(this).addClass('bg-surface text-primary shadow-card font-semibold').removeClass('text-on-surface-variant');
+    $('#tab-login').removeClass('bg-surface text-primary shadow-card font-semibold').addClass('text-on-surface-variant');
+    $('#panel-register').removeClass('hidden');
+    $('#panel-login').addClass('hidden');
+  });
+
+  // 角色切换：学生 ↔ 教师字段组
+  function pickRole(role) {
+    var active = 'flex items-center justify-center gap-2 rounded-lg border border-primary bg-primary-container px-4 py-3 text-sm font-semibold text-on-primary-container';
+    var idle = 'flex items-center justify-center gap-2 rounded-lg border border-outline-variant/30 bg-surface px-4 py-3 text-sm font-medium text-on-surface-variant';
+    if (role === 'student') {
+      $('#role-student').attr('class', active);
+      $('#role-teacher').attr('class', idle);
+      $('#fields-student').removeClass('hidden');
+      $('#fields-teacher').addClass('hidden');
+      $('#btn-register').attr('onclick', "location.href='catalog.html'");
+    } else {
+      $('#role-teacher').attr('class', active);
+      $('#role-student').attr('class', idle);
+      $('#fields-teacher').removeClass('hidden');
+      $('#fields-student').addClass('hidden');
+      $('#btn-register').attr('onclick', "location.href='admin.html'");
+    }
+  }
+  $('#role-student').on('click', function(){ pickRole('student'); });
+  $('#role-teacher').on('click', function(){ pickRole('teacher'); });
+
+  // 找回密码弹窗
+  $('#open-reset').on('click', function(){ $('#reset-modal').removeClass('hidden').addClass('flex'); });
+  $('#close-reset, #close-reset-2').on('click', function(){ $('#reset-modal').addClass('hidden').removeClass('flex'); });
+</script>
+
+</body>
+</html>

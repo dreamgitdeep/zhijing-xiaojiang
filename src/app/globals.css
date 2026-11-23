@@ -1,0 +1,776 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+/* ============================================================
+   新野兽派（Neo-Brutalism · 克制版）设计令牌
+   底色奶油油纸 #FBF3E4 + 1px 细网格；2.5px 纯黑描边；硬阴影无模糊；
+   撞色≤3：柠檬黄 #FFD84D（当前项/高亮）· 天蓝 #8EC5FF（面板/图表）· 墨黑 #111；
+   红 #E5322D / 绿 #2FBF71 仅表状态。圆角 12px，动效短促带过冲。
+   ============================================================ */
+@theme {
+  /* 品牌色（柠檬黄 = 主色/高亮） */
+  --color-primary: #ffd84d;
+  --color-primary-hover: #f2c94c;
+  --color-primary-container: #ffe9a8;
+  --color-on-primary: #111111;
+  --color-on-primary-container: #111111;
+  /* 背景 / 表面（奶油纸 + 暖白卡面） */
+  --color-surface-container-lowest: #fffcf3;
+  --color-surface: #fffcf3;
+  --color-surface-container: #fbf3e4;
+  --color-surface-container-high: #f4e9d2;
+  --color-surface-container-highest: #ebddc0;
+  /* 文字（纯黑 / 暖灰） */
+  --color-on-surface: #111111;
+  --color-on-surface-variant: #4c4a44;
+  /* 功能色（红绿仅表状态） */
+  --color-success: #2fbf71;
+  --color-error: #e5322d;
+  --color-warning: #e28a00;
+  --color-warn-container: #ffe9a8;
+  --color-on-warn-container: #111111;
+  --color-info: #8ec5ff;
+  /* 植境色谱（教师端功能分区/标签点缀色，数据语义色保留） */
+  --color-sprout: #6a9b3a;
+  --color-sprout-container: #eef5e2;
+  --color-on-sprout-container: #3d5c1e;
+  --color-blossom: #c76b8d;
+  --color-blossom-container: #f9ecf0;
+  --color-on-blossom-container: #7c3a52;
+  --color-lavender: #8a7bb8;
+  --color-lavender-container: #f0edf8;
+  --color-on-lavender-container: #4e4470;
+  --color-sun: #d19a2f;
+  --color-sun-container: #faf2e0;
+  --color-on-sun-container: #7a5a16;
+  --color-bark: #9a6b45;
+  --color-bark-container: #f5ede4;
+  --color-on-bark-container: #5c3d24;
+  --color-water: #3f8f96;
+  --color-water-container: #e6f2f3;
+  --color-on-water-container: #215257;
+  /* 描边（纯黑墨线） */
+  --color-outline: #111111;
+  --color-outline-variant: #111111;
+  /* 阴影（硬阴影，无模糊） */
+  --shadow-2xs: 2px 2px 0 #111111;
+  --shadow-xs: 2px 2px 0 #111111;
+  --shadow-sm: 3px 3px 0 #111111;
+  --shadow-md: 4px 4px 0 #111111;
+  --shadow-lg: 6px 6px 0 #111111;
+  --shadow-xl: 9px 9px 0 #111111;
+  --shadow-card: 6px 6px 0 #111111;
+  --shadow-float: 9px 9px 0 #111111;
+  --shadow-dialog: 14px 14px 0 #111111;
+  --shadow-leaf: 3px 3px 0 #111111;
+  /* 字体与动效 */
+  --font-latin: 'Space Grotesk', 'Noto Sans SC', sans-serif;
+  --ease-slam: cubic-bezier(0.3, 1.55, 0.5, 1);
+  --radius-full: 9999px;
+  --container-shell: 1680px;
+  --container-measure: 880px;
+  /* 布局语义尺寸：模态/面板/图表等定值尺寸，组件只引用工具类名（w-modal-sm 等） */
+  --size-modal-xs: 360px;
+  --size-modal-sm: 440px;
+  --size-modal-md: 560px;
+  --size-modal-vh: 85vh;
+  --size-modal-vh-md: 70vh;
+  --size-modal-vh-half: 48vh;
+  --size-modal-vh-lg: 90vh;
+  --size-modal-vh-xl: 92vh;
+  --size-stage-side: 300px;
+  --size-col-filter: 220px;
+  --size-col-narrow: 180px;
+  --size-chart-sm: 240px;
+  --size-chart-md: 260px;
+  --size-chart-lg: 440px;
+  --size-chat-pane: 480px;
+  --size-chat-min: 540px;
+  --size-pane-md: 420px;
+  --size-pane-lg: 520px;
+  --size-hero-min: 640px;
+  --size-hero-copy: 560px;
+  --size-min-xs: 120px;
+  --size-min-sm: 200px;
+  --size-min-md: 240px;
+  --size-min-lg: 320px;
+  --size-accent-bar: 3px;
+  --size-text-cap: 14em;
+  --size-catalog-ai: 176px;
+  /* 卡片网格最小列宽：repeat(auto-fill,minmax(var(--size-card-min),1fr)) */
+  --size-card-min: 320px;
+  --size-badge: 18px;
+  /* 视口联动面板高度（三栏页定高体系，勿改语义） */
+  --size-panel-vh: calc(100vh - 40px);
+  --size-panel-vh-chat: calc(100vh - 9rem);
+  --size-panel-vh-admin: calc(100vh - 240px);
+  --size-panel-dvh-catalog: calc(100dvh - 140px);
+  /* 布局比例（设计工作台右栏 / 气泡最大宽 / 首页文案位） */
+  --size-panel-ratio: 30%;
+  --size-panel-ratio-wide: 34%;
+  /* 案例背景页左栏（素材画廊）宽度占比 */
+  --size-case-media-w: 55%;
+  --size-bubble-max: 80%;
+  --size-bubble-max-lg: 85%;
+  --size-illu-ratio: 45%;
+  --inset-hero-copy: 14%;
+  --inset-switch-shift: 13px;
+  /* 首页聚光灯半径（HeroMask 引用） */
+  --spotlight-r: 140px;
+  /* 排版语义字号（标题粗体；正文常规；全站不小于 13px） */
+  --text-fs-title: 28px;
+  --text-fs-title--line-height: 1.3;
+  --text-fs-title--font-weight: 700;
+  --text-fs-section: 22px;
+  --text-fs-section--line-height: 1.4;
+  --text-fs-section--font-weight: 700;
+  --text-fs-card: 18px;
+  --text-fs-card--line-height: 1.5;
+  --text-fs-card--font-weight: 700;
+  --text-fs-body: 16px;
+  --text-fs-body--line-height: 1.8;
+  --text-fs-body--font-weight: 400;
+  --text-fs-sub: 14px;
+  --text-fs-sub--line-height: 1.6;
+  --text-fs-sub--font-weight: 400;
+  --text-fs-label: 13px;
+  --text-fs-label--line-height: 1.4;
+  --text-fs-label--font-weight: 400;
+  --text-fs-control: 16px;
+  --text-fs-control--line-height: 1.5;
+  --text-fs-control--font-weight: 500;
+  /* 学习大屏英雄巨数（响应式 96–160px） */
+  --text-hero-number: clamp(96px, 12vw, 160px);
+  --text-hero-number--line-height: 1;
+  --text-hero-number--font-weight: 900;
+  /* 首页大标题（响应式 56–120px） */
+  --text-hero-title: clamp(56px, 8vw, 120px);
+  --text-hero-title--line-height: 0.95;
+  --text-hero-title--font-weight: 900;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  /* 墨线色（浅色 #111 / 深色奶油），描边/硬阴影/文字通用 */
+  --color-ink: var(--neo-ink);
+  --color-sidebar_ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  /* 圆角统一 12px 封顶（不要大圆角） */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: var(--radius);
+  --radius-2xl: var(--radius);
+  --radius-3xl: var(--radius);
+  --radius-4xl: var(--radius);
+  --font-sans: var(--font-grotesk), var(--font-noto), system-ui, sans-serif;
+  --font-mono:
+    'Space Grotesk', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    'Liberation Mono', 'Courier New', monospace;
+  --font-serif:
+    'Noto Serif SC', 'Songti SC', 'SimSun', ui-serif, Georgia, Cambria,
+    'Times New Roman', Times, serif;
+}
+
+:root {
+  --radius: 12px;
+  /* 墨线 / 网格线（深色模式下翻转） */
+  --neo-ink: #111111;
+  --grid-line: #eadfcb;
+  --background: #fbf3e4;
+  --foreground: #111111;
+  --card: #fffcf3;
+  --card-foreground: #111111;
+  --popover: #fffcf3;
+  --popover-foreground: #111111;
+  --primary: #ffd84d;
+  --primary-foreground: #111111;
+  --secondary: #8ec5ff;
+  --secondary-foreground: #111111;
+  --muted: #f4e9d2;
+  --muted-foreground: #4c4a44;
+  --accent: #ffe9a8;
+  --accent-foreground: #111111;
+  --destructive: #e5322d;
+  --border: #111111;
+  --input: #111111;
+  --ring: #111111;
+  --chart-1: #ffd84d;
+  --chart-2: #8ec5ff;
+  --chart-3: #2fbf71;
+  --chart-4: #e5322d;
+  --chart-5: #8c8c8c;
+  --sidebar: #8ec5ff;
+  --sidebar-foreground: #111111;
+  --sidebar-primary: #ffd84d;
+  --sidebar-primary-foreground: #111111;
+  --sidebar-accent: #ffd84d;
+  --sidebar-accent-foreground: #111111;
+  --sidebar-border: #111111;
+  --sidebar-ring: #111111;
+}
+
+.dark {
+  --neo-ink: #fbf3e4;
+  --grid-line: #262214;
+  --background: #181610;
+  --foreground: #fbf3e4;
+  --card: #221f16;
+  --card-foreground: #fbf3e4;
+  --popover: #221f16;
+  --popover-foreground: #fbf3e4;
+  --primary: #ffd84d;
+  --primary-foreground: #111111;
+  --secondary: #2e5c94;
+  --secondary-foreground: #fbf3e4;
+  --muted: #2a261b;
+  --muted-foreground: #b5ac99;
+  --accent: #4a3f1e;
+  --accent-foreground: #ffd84d;
+  --destructive: #ff5f59;
+  --border: #fbf3e4;
+  --input: #fbf3e4;
+  --ring: #ffd84d;
+  --chart-1: #ffd84d;
+  --chart-2: #8ec5ff;
+  --chart-3: #3ed585;
+  --chart-4: #ff5f59;
+  --chart-5: #6f6f6f;
+  --sidebar: #24466e;
+  --sidebar-foreground: #fbf3e4;
+  --sidebar-primary: #ffd84d;
+  --sidebar-primary-foreground: #111111;
+  --sidebar-accent: #ffd84d;
+  --sidebar-accent-foreground: #111111;
+  --sidebar-border: #fbf3e4;
+  --sidebar-ring: #ffd84d;
+}
+
+/* M3 语义令牌深色覆写：挂在 <html class="dark"> 上，供外观设置切换 */
+.dark {
+  --color-primary: #ffd84d;
+  --color-primary-hover: #e6b800;
+  --color-primary-container: #4a3f1e;
+  --color-on-primary: #111111;
+  --color-on-primary-container: #ffd84d;
+  --color-surface-container-lowest: #1b1912;
+  --color-surface: #221f16;
+  --color-surface-container: #2a261b;
+  --color-surface-container-high: #332e20;
+  --color-surface-container-highest: #3d3726;
+  --color-on-surface: #fbf3e4;
+  --color-on-surface-variant: #b5ac99;
+  --color-success: #3ed585;
+  --color-error: #ff5f59;
+  --color-warning: #ffb53d;
+  --color-warn-container: #4a3d10;
+  --color-on-warn-container: #ffd84d;
+  --color-info: #8ec5ff;
+  --color-sprout: #8fc23f;
+  --color-sprout-container: #23321a;
+  --color-on-sprout-container: #d3e8b0;
+  --color-blossom: #e8769c;
+  --color-blossom-container: #3a2430;
+  --color-on-blossom-container: #f2c6d6;
+  --color-lavender: #a99ae0;
+  --color-lavender-container: #2b2740;
+  --color-on-lavender-container: #d6cdf2;
+  --color-sun: #e8b04c;
+  --color-sun-container: #3a3018;
+  --color-on-sun-container: #f2dcae;
+  --color-bark: #c08a5c;
+  --color-bark-container: #33281c;
+  --color-on-bark-container: #e8cfae;
+  --color-water: #4cb8c4;
+  --color-water-container: #1c3438;
+  --color-on-water-container: #bfe6ea;
+  --color-outline: #fbf3e4;
+  --color-outline-variant: #fbf3e4;
+  --shadow-2xs: 2px 2px 0 #000000;
+  --shadow-xs: 2px 2px 0 #000000;
+  --shadow-sm: 3px 3px 0 #000000;
+  --shadow-md: 4px 4px 0 #000000;
+  --shadow-lg: 6px 6px 0 #000000;
+  --shadow-xl: 9px 9px 0 #000000;
+  --shadow-card: 6px 6px 0 #000000;
+  --shadow-float: 9px 9px 0 #000000;
+  --shadow-dialog: 14px 14px 0 #000000;
+  --shadow-leaf: 3px 3px 0 #000000;
+}
+
+.dark body {
+  background-color: var(--background);
+}
+.dark .admin-floral-root {
+  background: transparent;
+}
+
+/* 深色下学生端 scope：主色保持柠檬黄，类别色沿用鲜亮档 */
+.dark .student-vivid {
+  --color-primary: #ffd84d;
+  --color-primary-container: #4a3f1e;
+  --color-on-primary-container: #ffd84d;
+  --color-sprout-container: #23321a;
+  --color-on-sprout-container: #d3e8b0;
+  --color-blossom-container: #3a2430;
+  --color-on-blossom-container: #f2c6d6;
+  --color-lavender-container: #2b2740;
+  --color-on-lavender-container: #d6cdf2;
+  --color-sun-container: #3a3018;
+  --color-on-sun-container: #f2dcae;
+  --color-water-container: #1c3438;
+  --color-on-water-container: #bfe6ea;
+  --color-bark-container: #33281c;
+  --color-on-bark-container: #e8cfae;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  /* 卡片/浮层表面（带硬阴影者）统一 2.5px 墨线描边；
+     显式 border 工具类的元素会在 utilities 层覆盖此默认值 */
+  [class*='shadow-card'],
+  [class*='shadow-float'],
+  [class*='shadow-dialog'] {
+    border: 2.5px solid var(--neo-ink);
+  }
+  /* 输入控件：白底 + 2.5px 墨线（野兽派默认） */
+  input:not([type='checkbox']):not([type='radio']):not([type='range']),
+  textarea,
+  select {
+    border: 2.5px solid var(--neo-ink);
+    border-radius: 10px;
+    background-color: var(--color-surface);
+    color: var(--color-on-surface);
+  }
+  /* 按钮物理：短促 + 一次过冲，像实物被拍下去 */
+  button:not(:disabled) {
+    transition:
+      transform 0.16s var(--ease-slam),
+      box-shadow 0.16s var(--ease-slam),
+      background-color 0.16s,
+      color 0.16s,
+      border-color 0.16s,
+      opacity 0.16s;
+  }
+  button:not(:disabled):hover {
+    transform: translate(-1px, -1px);
+  }
+  button:not(:disabled):active {
+    transform: translate(2px, 2px);
+  }
+}
+
+body {
+  @apply font-sans;
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--color-on-surface);
+  font-variant-numeric: tabular-nums;
+  /* 奶油油纸 + 1px 细网格 */
+  background-color: var(--background);
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+input,
+textarea,
+select,
+button {
+  font-size: 16px;
+}
+
+/* 大数字展示（学习大屏等）：粗体 + 等宽数字 */
+.neo-display {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+/* 灰色网点纹理（次要数据/占位） */
+.neo-dots {
+  background-color: var(--color-surface-container-high);
+  background-image: radial-gradient(var(--neo-ink) 1.1px, transparent 1.2px);
+  background-size: 7px 7px;
+}
+
+/* 2.5px 墨线描边宽度（野兽派规范；替代默认 1px border） */
+@utility border-neo {
+  border-width: 2.5px;
+}
+@utility border-t-neo {
+  border-top-width: 2.5px;
+}
+@utility border-b-neo {
+  border-bottom-width: 2.5px;
+}
+@utility border-l-neo {
+  border-left-width: 2.5px;
+}
+@utility border-r-neo {
+  border-right-width: 2.5px;
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* 题目卡片左右滑入（尊重系统减少动效偏好） */
+@keyframes qcard-next {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes qcard-prev {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-qcard-next {
+  animation: qcard-next 0.18s var(--ease-slam);
+}
+
+.animate-qcard-prev {
+  animation: qcard-prev 0.18s var(--ease-slam);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-qcard-next,
+  .animate-qcard-prev {
+    animation: none;
+  }
+}
+
+/* 设计工作台：环节切换方向滑入 + 工作台退出 + 案例背景入场（尊重减少动效偏好） */
+@keyframes stage-next {
+  from {
+    opacity: 0;
+    transform: translateX(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes stage-prev {
+  from {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes shell-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.98) translateY(12px);
+  }
+}
+
+@keyframes bg-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-stage-next {
+  animation: stage-next 0.2s var(--ease-slam);
+}
+
+.animate-stage-prev {
+  animation: stage-prev 0.2s var(--ease-slam);
+}
+
+.animate-shell-out {
+  animation: shell-out 0.18s ease-in forwards;
+}
+
+.animate-bg-in {
+  animation: bg-in 0.2s var(--ease-slam);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-stage-next,
+  .animate-stage-prev,
+  .animate-shell-out,
+  .animate-bg-in {
+    animation: none;
+  }
+}
+
+/* 首页进入按钮：柠檬黄 + 墨线 + 硬阴影按压物理 */
+.enter-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 46px;
+  border-radius: 12px;
+  background: #ffd84d;
+  border: 2.5px solid #111111;
+  color: #111111;
+  font-family: var(--font-sans);
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: 5px;
+  cursor: pointer;
+  box-shadow: 6px 6px 0 #111111;
+  transition:
+    transform 0.16s var(--ease-slam),
+    box-shadow 0.16s var(--ease-slam);
+}
+
+.enter-btn-leaf {
+  width: 18px;
+  height: 18px;
+  color: #111111;
+}
+
+.enter-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 9px 9px 0 #111111;
+}
+
+.enter-btn:active {
+  transform: translate(4px, 4px);
+  box-shadow: 1px 1px 0 #111111;
+}
+
+/* AI 回答 markdown 渲染 */
+.md-body {
+  font-size: 16px;
+  line-height: 1.8;
+  max-width: 68ch;
+}
+.md-body h3,
+.md-body h4 {
+  font-weight: 700;
+  color: var(--color-on-surface);
+  margin: 10px 0 4px;
+}
+.md-body h3 {
+  font-size: 18px;
+}
+.md-body h4 {
+  font-size: 16px;
+}
+.md-body p {
+  margin: 4px 0;
+}
+.md-body ul {
+  list-style: disc;
+  padding-left: 1.2rem;
+  margin: 4px 0;
+}
+.md-body ol {
+  list-style: decimal;
+  padding-left: 1.2rem;
+  margin: 4px 0;
+}
+.md-body li {
+  margin: 2px 0;
+}
+.md-body li::marker {
+  color: var(--color-on-surface);
+}
+.md-body strong {
+  font-weight: 700;
+  color: var(--color-on-surface);
+}
+.md-body a {
+  color: var(--color-on-surface);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: var(--color-primary);
+  text-decoration-thickness: 2px;
+}
+.md-body code {
+  background: var(--color-surface-container-high);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 0.82rem;
+}
+.md-body hr {
+  margin: 8px 0;
+  border-color: var(--color-outline-variant);
+  opacity: 0.3;
+}
+.md-body table {
+  border-collapse: collapse;
+  margin: 6px 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.md-body th,
+.md-body td {
+  border: 2px solid var(--neo-ink);
+  padding: 4px 10px;
+  text-align: left;
+  white-space: nowrap;
+}
+.md-body th {
+  font-weight: 700;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+.md-body blockquote {
+  margin: 6px 0;
+  padding: 2px 12px;
+  border-left: 4px solid var(--neo-ink);
+  background: var(--color-surface-container);
+  border-radius: 0 8px 8px 0;
+  color: var(--color-on-surface-variant);
+}
+.md-body p,
+.md-body li,
+.md-body a {
+  overflow-wrap: anywhere;
+}
+
+.admin-floral-root {
+  background: transparent;
+}
+
+/* ============ 学生端 scope ============
+   仅挂载在学生内容区；新野兽派下与全局令牌一致，类别色保留鲜亮档。 */
+.student-vivid {
+  --color-primary: #ffd84d;
+  --color-primary-container: #ffe9a8;
+  --color-on-primary-container: #111111;
+  --color-sprout: #7cb518;
+  --color-sprout-container: #eef7dc;
+  --color-on-sprout-container: #3d5c10;
+  --color-blossom: #e85d8a;
+  --color-blossom-container: #fde7ee;
+  --color-on-blossom-container: #8f2547;
+  --color-lavender: #8b5cf6;
+  --color-lavender-container: #efe9fd;
+  --color-on-lavender-container: #4c2ea8;
+  --color-sun: #f5a623;
+  --color-sun-container: #fdf1d9;
+  --color-on-sun-container: #8a5a08;
+  --color-water: #2ba7b8;
+  --color-water-container: #ddf3f6;
+  --color-on-water-container: #10606c;
+  --color-bark: #b07a4a;
+  --color-bark-container: #f7ece0;
+  --color-on-bark-container: #6b4423;
+}
+
+/* 平涂实色（原自然渐变已按野兽派规范改平涂；类名保留兼容） */
+.grad-leaf { background-color: #2fbf71; }
+.grad-sprout { background-color: #7cb518; }
+.grad-blossom { background-color: #e85d8a; }
+.grad-sun { background-color: #f5a623; }
+.grad-water { background-color: #8ec5ff; }
+.grad-lavender { background-color: #8b5cf6; }
+
+/* 悬停物理（卡片/入口）：阴影加大、元素向左上；按下收回 */
+.lift {
+  transition:
+    transform 0.16s var(--ease-slam),
+    box-shadow 0.16s var(--ease-slam);
+}
+.lift:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: var(--shadow-float);
+}
+.lift:active {
+  transform: translate(3px, 3px);
+  box-shadow: var(--shadow-leaf);
+}
+
+/* 入场动画（区块级，配合 style animation-delay 做 stagger） */
+@keyframes stu-rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.rise { animation: stu-rise 0.22s var(--ease-slam) backwards; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lift, .lift:hover, .lift:active { transition: none; transform: none; }
+  .rise { animation: none; }
+}
+
+/* 移动端导航抽屉滑入 */
+@keyframes drawer-in {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}

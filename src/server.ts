@@ -1,0 +1,38 @@
+import { createServer } from 'http';
+import { parse } from 'url';
+import next from 'next';
+import { ensureDemoData } from './lib/demo-seed';
+
+const dev = process.env.COZE_PROJECT_ENV !== 'PROD';
+const hostname = process.env.HOSTNAME || 'localhost';
+const port = parseInt(process.env.PORT || '5000', 10);
+
+// Create Next.js app
+const app = next({ dev, hostname, port });
+const handle = app.getRequestHandler();
+
+app.prepare().then(() => {
+  const server = createServer(async (req, res) => {
+    try {
+      const parsedUrl = parse(req.url!, true);
+      await handle(req, res, parsedUrl);
+    } catch (err) {
+      console.error('Error occurred handling', req.url, err);
+      res.statusCode = 500;
+      res.end('Internal server error');
+    }
+  });
+  server.once('error', err => {
+    console.error(err);
+    process.exit(1);
+  });
+  server.listen(port, () => {
+    console.log(
+      `> Server listening at http://${hostname}:${port} as ${
+        dev ? 'development' : process.env.COZE_PROJECT_ENV
+      }`,
+    );
+    // 启动后异步补齐演示数据（幂等）：生产环境首次启动自动灌入名单与学情，失败不影响服务
+    ensureDemoData().catch((err) => console.error('[demo-seed] 演示数据补齐失败：', err));
+  });
+});
